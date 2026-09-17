@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - User Profile">
+  <title>My Profile | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/profile.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container section">
+    <div class="section-header">
+      <h2 class="section-title">My <span>Profile</span></h2>
+    </div>
+    
+    <div class="profile-layout" style="display: flex; gap: 2rem; flex-wrap: wrap;">
+      <div class="profile-sidebar" style="flex: 1; min-width: 300px;">
+        <div class="profile-card">
+          <div class="profile-avatar-wrapper">
+            <div class="profile-avatar" id="profileAvatarDisplay">J</div>
+            <label class="avatar-upload-btn" for="avatarInput" title="Change photo">📷</label>
+            <input type="file" id="avatarInput" accept="image/*" class="d-none">
+          </div>
+          <h2 class="profile-name" id="profileName">John Doe</h2>
+          <p class="profile-email" id="profileEmail">john@example.com</p>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span class="profile-stat-num" id="statBookings">0</span>
+              <span class="profile-stat-label">Bookings</span>
+            </div>
+            <div class="profile-stat">
+              <span class="profile-stat-num" id="statWishlist">0</span>
+              <span class="profile-stat-label">Wishlist</span>
+            </div>
+            <div class="profile-stat">
+              <span class="profile-stat-num" id="statReviews">0</span>
+              <span class="profile-stat-label">Reviews</span>
+            </div>
+          </div>
+          <a href="./admin/index.html" class="btn btn-outline btn-sm btn-full admin-link d-none" id="adminLink">⚙️ Admin Panel</a>
+        </div>
+      </div>
+      
+      <div class="profile-main" style="flex: 2; min-width: 300px;">
+        <div class="tabs-container">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="bookings">📋 My Bookings</button>
+            <button class="tab-btn" data-tab="wishlist">❤️ Wishlist</button>
+            <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+          </div>
+          
+          <!-- Bookings Tab -->
+          <div class="tab-panel active" id="tabBookings">
+            <div class="bookings-filter">
+              <select class="form-control form-select" id="bookingFilter">
+                <option value="all">All Bookings</option>
+                <option value="hotel">Hotels</option>
+                <option value="flight">Flights</option>
+                <option value="package">Packages</option>
+              </select>
+            </div>
+            <div id="bookingsList"><!-- populated by JS --></div>
+          </div>
+          
+          <!-- Wishlist Tab -->
+          <div class="tab-panel" id="tabWishlist">
+            <div class="grid-3" id="wishlistGrid"><!-- populated by JS --></div>
+          </div>
+          
+          <!-- Settings Tab -->
+          <div class="tab-panel" id="tabSettings">
+            <form id="settingsForm" class="settings-form">
+              <h3>Personal Information</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="settingName">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" id="settingPhone">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="settingEmail">
+              </div>
+              <h3>Change Password</h3>
+              <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" id="currentPassword">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">New Password</label>
+                  <input type="password" class="form-control" id="newPassword">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirm New Password</label>
+                  <input type="password" class="form-control" id="confirmNewPassword">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/profile-page.js"></script>
+</body>
+</html>

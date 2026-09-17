@@ -1,0 +1,7 @@
+/* contact.css */
+.contact-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+@media (min-width: 992px) { .contact-layout { grid-template-columns: 1fr 1fr; } }
+.contact-info-card { display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
+.contact-icon { font-size: 1.5rem; color: var(--primary); width: 48px; height: 48px; border-radius: var(--radius-full); background: var(--primary-xlight); display: flex; align-items: center; justify-content: center; }
+.faq-section { margin-top: 4rem; }
+.map-container { height: 400px; border-radius: var(--radius-md); overflow: hidden; background: #e0e0e0; }

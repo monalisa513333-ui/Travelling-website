@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | TravelVerse Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- Admin Navbar (top bar) -->
+<div class="admin-topbar">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+  <div class="admin-topbar-brand">
+    <span class="logo-icon">✈</span> TravelVerse Admin
+  </div>
+  <div class="admin-topbar-actions">
+    <span class="admin-user-name" id="adminUserName"></span>
+    <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+    <a href="../index.html" class="btn btn-outline btn-sm" target="_blank">View Site ↗</a>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="adminSidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <a href="./index.html" class="sidebar-link active" data-page="dashboard">
+      <span class="sidebar-icon">📊</span> Dashboard
+    </a>
+    <a href="./users.html" class="sidebar-link" data-page="users">
+      <span class="sidebar-icon">👥</span> Users
+    </a>
+    <a href="./bookings.html" class="sidebar-link" data-page="bookings">
+      <span class="sidebar-icon">📋</span> Bookings
+    </a>
+    <a href="./packages.html" class="sidebar-link" data-page="packages">
+      <span class="sidebar-icon">📦</span> Packages
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Content</div>
+    <a href="../destinations.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">🗺️</span> Destinations ↗
+    </a>
+    <a href="../reviews.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">⭐</span> Reviews ↗
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Account</div>
+    <a href="../profile.html" class="sidebar-link">
+      <span class="sidebar-icon">👤</span> My Profile
+    </a>
+    <button class="sidebar-link sidebar-logout" onclick="Auth.logout()">
+      <span class="sidebar-icon">🚪</span> Logout
+    </button>
+  </nav>
+</aside>
+
+<!-- Main Content area -->
+<main class="admin-main" id="adminMain">
+  <div class="admin-page-header">
+    <div class="header-content">
+      <h1>📊 Dashboard</h1>
+      <p class="text-muted">Welcome back, <span id="adminWelcomeName"></span>!</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#EBF8FF;color:#3182CE">👥</div>
+      <div class="stat-info">
+        <div class="stat-number" id="statUsers" data-target="0">0</div>
+        <div class="stat-label">Total Users</div>
+        <div class="stat-change positive">+12% this month</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#F0FFF4;color:#38A169">📋</div>
+      <div class="stat-info">
+        <div class="stat-number" id="statBookings" data-target="0">0</div>
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-change positive">+8% this month</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#FFFAF0;color:#D69E2E">💰</div>
+      <div class="stat-info">
+        <div class="stat-number" id="statRevenue" data-target="0">$0</div>
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-change positive">+23% this month</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#FFF5F5;color:#E53E3E">📦</div>
+      <div class="stat-info">
+        <div class="stat-number" id="statPackages" data-target="0">0</div>
+        <div class="stat-label">Active Packages</div>
+        <div class="stat-change neutral">No change</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Type Breakdown -->
+  <div class="admin-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h3>Bookings by Type</h3>
+      </div>
+      <div class="admin-card-body">
+        <div class="chart-donut" id="bookingTypeChart">
+          <!-- SVG donut chart rendered by JS -->
+        </div>
+        <div class="chart-legend" id="bookingTypeLegend"></div>
+      </div>
+    </div>
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h3>Booking Status Overview</h3>
+      </div>
+      <div class="admin-card-body">
+        <div id="statusOverview">
+          <div class="status-row">
+            <div class="status-indicator confirmed"></div>
+            <span>Confirmed</span>
+            <span class="fw-bold" id="countConfirmed">0</span>
+          </div>
+          <div class="status-row">
+            <div class="status-indicator pending"></div>
+            <span>Pending</span>
+            <span class="fw-bold" id="countPending">0</span>
+          </div>
+          <div class="status-row">
+            <div class="status-indicator cancelled"></div>
+            <span>Cancelled</span>
+            <span class="fw-bold" id="countCancelled">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Bookings Table -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3>Recent Bookings</h3>
+      <a href="./bookings.html" class="btn btn-outline btn-sm">View All</a>
+    </div>
+    <div class="admin-card-body">
+      <div class="table-wrapper">
+        <table class="data-table" id="recentBookingsTable">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>User</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recentBookingsTbody"><!-- populated by JS --></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h3>Quick Actions</h3>
+    <div class="quick-actions-grid">
+      <a href="./users.html" class="quick-action-card"><span>👥</span> Manage Users</a>
+      <a href="./bookings.html" class="quick-action-card"><span>📋</span> View Bookings</a>
+      <a href="./packages.html" class="quick-action-card"><span>📦</span> Add Package</a>
+      <a href="../contact.html" class="quick-action-card"><span>💬</span> View Messages</a>
+    </div>
+  </div>
+</main>
+
+  <script src="../js/data/destinations.js"></script>
+  <script src="../js/data/hotels.js"></script>
+  <script src="../js/data/flights.js"></script>
+  <script src="../js/data/packages.js"></script>
+  <script src="../js/data/reviews.js"></script>
+  <script src="../js/modules/utils.js"></script>
+  <script src="../js/modules/auth.js"></script>
+  <script src="../js/modules/booking.js"></script>
+  <script src="../js/modules/admin.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup UI
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('active');
+        });
+      }
+
+      // Check auth
+      if (!window.Auth || !window.Auth.isAdmin()) {
+        window.location.href = '../index.html';
+        return;
+      }
+      
+      const user = window.Auth.getCurrentUser();
+      if(user) {
+        document.getElementById('adminUserName').textContent = user.name;
+        document.getElementById('adminWelcomeName').textContent = user.name;
+      }
+
+      // Load Stats
+      let users = [];
+      try {
+        users = JSON.parse(localStorage.getItem('tv_users') || '[]');
+      } catch(e) {}
+      
+      let bookings = [];
+      try {
+        bookings = JSON.parse(localStorage.getItem('tv_bookings') || '[]');
+      } catch(e) {}
+
+      let customPkgs = [];
+      try {
+        customPkgs = JSON.parse(localStorage.getItem('tv_packages_custom') || '[]');
+      } catch(e) {}
+      
+      const allPackages = [...(window.PACKAGES || []), ...customPkgs];
+
+      let revenue = 0;
+      let confCount = 0, pendCount = 0, cancCount = 0;
+      let typeCount = { hotel: 0, flight: 0, package: 0 };
+      
+      bookings.forEach(b => {
+        if(b.status === 'confirmed') confCount++;
+        if(b.status === 'pending') pendCount++;
+        if(b.status === 'cancelled') cancCount++;
+        
+        if(b.status !== 'cancelled') {
+          revenue += Number(b.amount || 0);
+        }
+        if(b.type) {
+          typeCount[b.type] = (typeCount[b.type] || 0) + 1;
+        }
+      });
+
+      // Animate numbers
+      const animateVal = (id, val, isMoney = false) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.dataset.target = val;
+        let current = 0;
+        const inc = Math.max(1, Math.floor(val / 20));
+        const timer = setInterval(() => {
+          current += inc;
+          if(current >= val) {
+            current = val;
+            clearInterval(timer);
+          }
+          el.textContent = isMoney ? '$' + current.toLocaleString() : current.toLocaleString();
+        }, 30);
+      };
+
+      animateVal('statUsers', users.length);
+      animateVal('statBookings', bookings.length);
+      animateVal('statRevenue', revenue, true);
+      animateVal('statPackages', allPackages.length);
+
+      document.getElementById('countConfirmed').textContent = confCount;
+      document.getElementById('countPending').textContent = pendCount;
+      document.getElementById('countCancelled').textContent = cancCount;
+
+      // Populate recent bookings
+      const tbody = document.getElementById('recentBookingsTbody');
+      if (tbody) {
+        const recent = [...bookings].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+        tbody.innerHTML = recent.map(b => {
+          const u = users.find(x => x.id === b.userId);
+          const statusClass = b.status === 'confirmed' ? 'text-success' : b.status === 'pending' ? 'text-warning' : 'text-danger';
+          return '<tr>' +
+            '<td>#' + String(b.id).substring(0,6) + '</td>' +
+            '<td>' + (u ? u.name : 'Unknown User') + '</td>' +
+            '<td style="text-transform:capitalize">' + b.type + '</td>' +
+            '<td>$' + b.amount + '</td>' +
+            '<td><span class="status-badge ' + b.status + '">' + b.status + '</span></td>' +
+            '<td>' + new Date(b.createdAt).toLocaleDateString() + '</td>' +
+            '<td><a href="./bookings.html" class="btn btn-ghost btn-sm">View</a></td>' +
+          '</tr>';
+        }).join('') || '<tr><td colspan="7" class="text-center">No bookings found</td></tr>';
+      }
+
+      // Simple SVG Donut Chart
+      const chartEl = document.getElementById('bookingTypeChart');
+      const legendEl = document.getElementById('bookingTypeLegend');
+      if (chartEl && legendEl) {
+        const totalTypes = typeCount.hotel + typeCount.flight + typeCount.package || 1;
+        let hPct = (typeCount.hotel / totalTypes) * 100;
+        let fPct = (typeCount.flight / totalTypes) * 100;
+        let pPct = (typeCount.package / totalTypes) * 100;
+        
+        chartEl.style.width = '150px';
+        chartEl.style.height = '150px';
+        chartEl.style.borderRadius = '50%';
+        chartEl.style.margin = '0 auto';
+        chartEl.style.background = 'conic-gradient(' +
+          'var(--primary) 0% ' + hPct + '%, ' +
+          'var(--accent) ' + hPct + '% ' + (hPct + fPct) + '%, ' +
+          'var(--success) ' + (hPct + fPct) + '% 100%' +
+        ')';
+        chartEl.style.position = 'relative';
+        
+        const hole = document.createElement('div');
+        hole.style.position = 'absolute';
+        hole.style.top = '20%';
+        hole.style.left = '20%';
+        hole.style.width = '60%';
+        hole.style.height = '60%';
+        hole.style.background = 'var(--bg-card)';
+        hole.style.borderRadius = '50%';
+        chartEl.appendChild(hole);
+
+        legendEl.innerHTML = '<div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem;flex-wrap:wrap;">' +
+            '<div><span style="color:var(--primary)">●</span> Hotels (' + Math.round(hPct) + '%)</div>' +
+            '<div><span style="color:var(--accent)">●</span> Flights (' + Math.round(fPct) + '%)</div>' +
+            '<div><span style="color:var(--success)">●</span> Packages (' + Math.round(pPct) + '%)</div>' +
+          '</div>';
+      }
+    });
+  </script>
+</body>
+</html>

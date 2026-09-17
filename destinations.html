@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Explore Destinations">
+  <title>Destinations | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/destinations.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link active">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Explore Destinations</h1>
+      <p class="page-header-subtitle">Discover 200+ breathtaking destinations worldwide</p>
+      <nav class="breadcrumb"><a href="./index.html">Home</a> <span>›</span> <span>Destinations</span></nav>
+    </div>
+  </div>
+
+  <!-- Search + Filter Bar -->
+  <div class="filter-topbar">
+    <div class="container">
+      <div class="filter-topbar-inner">
+        <div class="search-input-wrapper">
+          <input type="text" class="form-control" id="searchInput" placeholder="🔍 Search destinations...">
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" data-continent="all">All</button>
+          <button class="pill" data-continent="asia">🌏 Asia</button>
+          <button class="pill" data-continent="europe">🏰 Europe</button>
+          <button class="pill" data-continent="americas">🌎 Americas</button>
+          <button class="pill" data-continent="africa">🌍 Africa</button>
+          <button class="pill" data-continent="oceania">🦘 Oceania</button>
+        </div>
+        <div class="sort-group">
+          <select class="form-control form-select" id="sortSelect">
+            <option value="popular">Most Popular</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+            <option value="name">A-Z</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+      <div class="page-layout">
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar page-layout-sidebar">
+          <div class="filter-sidebar-header">
+            <h3>🎛️ Filters</h3>
+            <button class="btn btn-ghost btn-sm" id="clearFilters">Clear All</button>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Category</h4>
+            <div class="filter-checks">
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="beach"><span>🏖️ Beach</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="mountain"><span>⛰️ Mountain</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="city"><span>🏙️ City</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="culture"><span>🏛️ Culture</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="safari"><span>🦁 Safari</span></label>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Budget (per person)</h4>
+            <div class="price-range">
+              <input type="range" class="price-range-slider" id="maxPrice" min="0" max="10000" value="10000" step="100">
+              <div class="price-range-labels">
+                <span>$0</span>
+                <span id="maxPriceLabel">$10,000</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Min Rating</h4>
+            <div class="rating-filter" id="ratingFilter">
+              <button class="rating-btn active" data-rating="0">Any</button>
+              <button class="rating-btn" data-rating="3">3+ ⭐</button>
+              <button class="rating-btn" data-rating="4">4+ ⭐</button>
+              <button class="rating-btn" data-rating="4.5">4.5+ ⭐</button>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Duration</h4>
+            <div class="filter-checks">
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="short" name="duration"><span>1-3 Days</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="medium" name="duration"><span>4-7 Days</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="long" name="duration"><span>8+ Days</span></label>
+            </div>
+          </div>
+        </aside>
+        
+        <!-- Results Grid -->
+        <main class="destinations-main">
+          <div class="results-bar">
+            <p class="results-count" id="resultsCount">Showing 0 destinations</p>
+            <div class="view-toggle">
+              <button class="view-btn active" data-view="grid" title="Grid view">▦</button>
+              <button class="view-btn" data-view="list" title="List view">☰</button>
+            </div>
+          </div>
+          <div class="grid-3" id="destinationsGrid"><!-- cards rendered by JS --></div>
+          <div id="noResults" class="no-results d-none">
+            <p>😔 No destinations found. Try adjusting your filters.</p>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/destinations.js"></script>
+</body>
+</html>

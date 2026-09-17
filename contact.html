@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Contact Us">
+  <title>Contact | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/contact.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <style>
+    .contact-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .contact-info-card { background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); text-align: center; border: 1px solid var(--border-light); }
+    .contact-info-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .contact-info-card h4 { margin: 0 0 0.5rem; }
+    .contact-info-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0; }
+    
+    .contact-main-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-bottom: 4rem; }
+    @media (min-width: 900px) { .contact-main-grid { grid-template-columns: 3fr 2fr; } }
+    
+    .contact-form-card { background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); }
+    .contact-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-error { color: var(--danger); font-size: 0.8rem; display: block; margin-top: 0.25rem; }
+    .form-hint { text-align: right; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+    
+    .contact-success { text-align: center; padding: 3rem 0; }
+    .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+    
+    .contact-map-col { display: flex; flex-direction: column; gap: 1.5rem; }
+    .office-hours, .social-contact { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); }
+    .hours-table { width: 100%; font-size: 0.9rem; }
+    .hours-table td { padding: 0.5rem 0; border-bottom: 1px solid var(--border-light); }
+    .hours-table tr:last-child td { border: none; }
+    
+    .faq-section { max-width: 800px; margin: 0 auto; }
+    .accordion { display: flex; flex-direction: column; gap: 1rem; }
+    .accordion-item { background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-light); overflow: hidden; }
+    .accordion-header { padding: 1.25rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+    .accordion-header:hover { background: var(--bg-alt); }
+    .accordion-body { padding: 0 1.25rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; font-size: 0.95rem; color: var(--text-light); }
+    .accordion-item.active .accordion-body { padding-bottom: 1.25rem; }
+    .accordion-item.active .accordion-icon { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link active">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">📞 Contact Us</h1>
+      <p class="page-header-subtitle">We're here to help plan your perfect journey</p>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+      <!-- Contact Info Cards -->
+      <div class="contact-info-grid">
+        <div class="contact-info-card">
+          <div class="contact-info-icon">📍</div>
+          <h4>Visit Us</h4>
+          <p>123 Travel Street, Adventure Avenue<br>New York, NY 10001, USA</p>
+        </div>
+        <div class="contact-info-card">
+          <div class="contact-info-icon">📞</div>
+          <h4>Call Us</h4>
+          <p>+1 (800) TRAVEL-1<br>+1 (212) 555-0123</p>
+          <p class="text-muted" style="font-size:var(--fs-xs)">Mon-Fri 9AM-6PM EST</p>
+        </div>
+        <div class="contact-info-card">
+          <div class="contact-info-icon">✉️</div>
+          <h4>Email Us</h4>
+          <p>hello@travelverse.com<br>support@travelverse.com</p>
+        </div>
+        <div class="contact-info-card">
+          <div class="contact-info-icon">💬</div>
+          <h4>Live Chat</h4>
+          <p>Available 24/7 for instant support</p>
+          <button class="btn btn-outline btn-sm" style="margin-top:0.5rem">Start Chat</button>
+        </div>
+      </div>
+      
+      <!-- Contact Form + Map -->
+      <div class="contact-main-grid">
+        <!-- Form -->
+        <div class="contact-form-card">
+          <h2>Send Us a Message</h2>
+          <p class="text-muted">Fill in the form and we'll get back to you within 24 hours.</p>
+          
+          <form id="contactForm" class="contact-form" novalidate>
+            <div id="formContent">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">First Name</label>
+                  <input type="text" class="form-control" id="contactFirstName" placeholder="John" required>
+                  <span class="form-error" id="firstNameError"></span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">Last Name</label>
+                  <input type="text" class="form-control" id="contactLastName" placeholder="Doe" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Email Address</label>
+                <input type="email" class="form-control" id="contactEmail" placeholder="john@example.com" required>
+                <span class="form-error" id="emailError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="contactPhone" placeholder="+1 (555) 000-0000">
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Subject</label>
+                <select class="form-control form-select" id="contactSubject" required>
+                  <option value="">Select a subject</option>
+                  <option>General Inquiry</option>
+                  <option>Booking Support</option>
+                  <option>Cancellation & Refunds</option>
+                  <option>Package Information</option>
+                  <option>Hotel Booking</option>
+                  <option>Flight Booking</option>
+                  <option>Technical Issue</option>
+                  <option>Partnership</option>
+                </select>
+                <span class="form-error" id="subjectError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Message</label>
+                <textarea class="form-control form-textarea" id="contactMessage" placeholder="How can we help you? (minimum 20 characters)" rows="6" maxlength="500" required></textarea>
+                <div class="form-hint"><span id="charCount">0</span>/500 characters</div>
+                <span class="form-error" id="messageError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-check" style="display:flex;align-items:center;gap:0.5rem">
+                  <input type="checkbox" class="form-check-input" id="contactNewsletter">
+                  <span>Subscribe to our newsletter for travel deals</span>
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg" id="contactSubmitBtn" style="width:100%">
+                <span id="submitBtnText">Send Message 📤</span>
+              </button>
+            </div>
+            
+            <!-- Success State -->
+            <div class="contact-success d-none" id="contactSuccess">
+              <div class="success-icon">✅</div>
+              <h3>Message Sent!</h3>
+              <p>Thank you! We'll get back to you within 24 hours.</p>
+              <button type="button" class="btn btn-outline" style="margin-top:1rem" onclick="resetContactForm()">Send Another Message</button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Map + Social -->
+        <div class="contact-map-col">
+          <div class="contact-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799160891!2d-74.26055617862516!3d40.69767006856176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin" width="100%" height="350" style="border:0;border-radius:var(--radius-md)" allowfullscreen loading="lazy" title="Our Location"></iframe>
+          </div>
+          
+          <div class="office-hours">
+            <h4>🕐 Office Hours</h4>
+            <table class="hours-table">
+              <tr><td>Monday – Friday</td><td class="fw-semibold">9:00 AM – 6:00 PM</td></tr>
+              <tr><td>Saturday</td><td class="fw-semibold">10:00 AM – 4:00 PM</td></tr>
+              <tr><td>Sunday</td><td class="text-muted">Closed</td></tr>
+            </table>
+          </div>
+          
+          <div class="social-contact">
+            <h4>Follow Us</h4>
+            <div class="social-links" style="margin-top:1rem">
+              <a href="#" class="social-link" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--bg-alt);border-radius:50%;color:var(--primary);margin-right:0.5rem">f</a>
+              <a href="#" class="social-link" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--bg-alt);border-radius:50%;color:var(--primary);margin-right:0.5rem">in</a>
+              <a href="#" class="social-link" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--bg-alt);border-radius:50%;color:var(--primary);margin-right:0.5rem">tw</a>
+              <a href="#" class="social-link" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--bg-alt);border-radius:50%;color:var(--primary)">yt</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- FAQ Section -->
+      <div class="faq-section">
+        <div class="section-header" style="text-align:center;margin-bottom:2rem">
+          <span class="section-eyebrow" style="color:var(--primary);font-weight:600;text-transform:uppercase;font-size:0.85rem">FAQ</span>
+          <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+        </div>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">How do I book a tour package? <span class="accordion-icon">▼</span></div>
+            <div class="accordion-body">Select your desired package, choose your travel dates, number of travelers, and click Book Now. You'll receive a confirmation email within minutes.</div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">What is your cancellation policy? <span class="accordion-icon">▼</span></div>
+            <div class="accordion-body">We offer free cancellation within 24 hours of booking. After that, cancellations made 14+ days before departure receive a 75% refund. Within 7 days: 50% refund.</div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">Do you offer travel insurance? <span class="accordion-icon">▼</span></div>
+            <div class="accordion-body">Yes! We partner with leading insurers to offer comprehensive travel insurance covering medical emergencies, trip cancellation, lost luggage, and more. Add it during checkout.</div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">How far in advance should I book? <span class="accordion-icon">▼</span></div>
+            <div class="accordion-body">We recommend booking at least 2-3 months in advance for peak season travel (June-August, December-January). For off-peak travel, 4-6 weeks is usually sufficient.</div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">Can I modify my booking after confirmation? <span class="accordion-icon">▼</span></div>
+            <div class="accordion-body">Yes, modifications are allowed subject to availability. Contact our support team or log in to your account to request changes. Modification fees may apply.</div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">Do you offer group discounts? <span class="accordion-icon">▼</span></div>
+            <div class="accordion-body">Absolutely! Groups of 10+ travelers receive 15% off. Groups of 20+ receive 20% off. Contact our group travel specialist for custom quotes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+
+  <script>
+    // Inline Script for Contact Form
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contactForm');
+      const msgInput = document.getElementById('contactMessage');
+      const charCount = document.getElementById('charCount');
+      
+      // Char counter
+      msgInput.addEventListener('input', () => {
+        const len = msgInput.value.length;
+        charCount.textContent = len;
+        if(len > 0 && len < 20) {
+          charCount.style.color = 'var(--danger)';
+        } else {
+          charCount.style.color = 'var(--text-muted)';
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Basic Validation
+        let isValid = true;
+        const fname = document.getElementById('contactFirstName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const subject = document.getElementById('contactSubject').value;
+        const message = document.getElementById('contactMessage').value.trim();
+        
+        // Reset errors
+        document.getElementById('firstNameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('subjectError').textContent = '';
+        document.getElementById('messageError').textContent = '';
+
+        if (!fname) { document.getElementById('firstNameError').textContent = 'First name is required.'; isValid = false; }
+        
+        const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        if (!email || !emailRegex.test(email)) { document.getElementById('emailError').textContent = 'Valid email is required.'; isValid = false; }
+        
+        if (!subject) { document.getElementById('subjectError').textContent = 'Subject is required.'; isValid = false; }
+        
+        if (!message || message.length < 20) { document.getElementById('messageError').textContent = 'Message must be at least 20 characters.'; isValid = false; }
+        
+        if (isValid) {
+          // Show Success
+          document.getElementById('formContent').classList.add('d-none');
+          document.getElementById('contactSuccess').classList.remove('d-none');
+          form.reset();
+          charCount.textContent = '0';
+        }
+      });
+    });
+
+    function resetContactForm() {
+      document.getElementById('formContent').classList.remove('d-none');
+      document.getElementById('contactSuccess').classList.add('d-none');
+    }
+
+    // Accordion Logic
+    window.toggleAccordion = function(header) {
+      const item = header.parentElement;
+      const body = item.querySelector('.accordion-body');
+      
+      // Close all other accordions
+      document.querySelectorAll('.accordion-item').forEach(acc => {
+        if(acc !== item) {
+          acc.classList.remove('active');
+          acc.querySelector('.accordion-body').style.maxHeight = null;
+        }
+      });
+      
+      // Toggle current
+      item.classList.toggle('active');
+      if (item.classList.contains('active')) {
+        body.style.maxHeight = body.scrollHeight + 30 + 'px'; // + padding
+      } else {
+        body.style.maxHeight = null;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+/* home.css */
+.home-hero-search { margin-top: 2rem; background: var(--bg-card); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-xl); }
+.popular-destinations { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; gap: 1.5rem; }
+.popular-destinations .card { min-width: 280px; scroll-snap-align: start; }
+.testimonial-carousel { display: flex; overflow-x: auto; gap: 2rem; scroll-snap-type: x mandatory; padding: 1rem 0; }
+.testimonial-card { min-width: 300px; scroll-snap-align: start; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+.stat-counter { text-align: center; }
+.trust-badges { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 3rem; opacity: 0.7; }
+.promo-banner { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 4rem 2rem; border-radius: var(--radius-lg); text-align: center; margin: 4rem 0; }

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Search Flights">
+  <title>Flights | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/flights.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link active">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Search Flights</h1>
+      <p class="page-header-subtitle">Find the best deals on flights worldwide</p>
+    </div>
+  </div>
+
+  <!-- Flight Search Panel -->
+  <div class="flight-search-panel">
+    <div class="container">
+      <div class="search-tabs">
+        <button class="search-tab active" data-type="oneway">✈️ One Way</button>
+        <button class="search-tab" data-type="roundtrip">🔄 Round Trip</button>
+        <button class="search-tab" data-type="multicity">🗺️ Multi-City</button>
+      </div>
+      
+      <form class="flight-search-form" id="flightSearchForm">
+        <!-- One-way / Round-trip form -->
+        <div class="flight-search-row" id="mainFlightRow">
+          <div class="flight-field">
+            <label>From ✈️</label>
+            <input type="text" class="form-control" id="flightFrom" placeholder="City or airport code" list="airportsList" required>
+            <datalist id="airportsList">
+              <option value="New York (JFK)"><option value="London (LHR)"><option value="Dubai (DXB)"><option value="Tokyo (NRT)"><option value="Paris (CDG)"><option value="Singapore (SIN)"><option value="Bali (DPS)"><option value="Bangkok (BKK)">
+            </datalist>
+          </div>
+          <button type="button" class="swap-btn" id="swapBtn" title="Swap origin/destination">⇄</button>
+          <div class="flight-field">
+            <label>To ✈️</label>
+            <input type="text" class="form-control" id="flightTo" placeholder="City or airport code" list="airportsList2" required>
+            <datalist id="airportsList2">
+              <option value="New York (JFK)"><option value="London (LHR)"><option value="Dubai (DXB)"><option value="Tokyo (NRT)"><option value="Paris (CDG)"><option value="Singapore (SIN)"><option value="Bali (DPS)"><option value="Bangkok (BKK)">
+            </datalist>
+          </div>
+          <div class="flight-field">
+            <label>Departure</label>
+            <input type="date" class="form-control" id="flightDepart" required>
+          </div>
+          <div class="flight-field" id="returnField" style="display:none">
+            <label>Return</label>
+            <input type="date" class="form-control" id="flightReturn">
+          </div>
+          <div class="flight-field">
+            <label>Passengers</label>
+            <select class="form-control form-select" id="flightPassengers">
+              <option value="1">1 Adult</option><option value="2">2 Adults</option><option value="3">3 Adults</option><option value="4">4 Adults</option>
+            </select>
+          </div>
+          <div class="flight-field">
+            <label>Class</label>
+            <select class="form-control form-select" id="flightClass">
+              <option value="economy">Economy</option>
+              <option value="business">Business</option>
+              <option value="first">First Class</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary search-btn">🔍 Search Flights</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Filter + Results -->
+  <section class="section-sm" id="resultsSection" style="display:none">
+    <div class="container">
+      <!-- Filter bar -->
+      <div class="flight-filters">
+        <div class="filter-pill-group">
+          <span class="filter-label">Stops:</span>
+          <button class="pill active" data-stops="all">Any</button>
+          <button class="pill" data-stops="0">Direct</button>
+          <button class="pill" data-stops="1">1 Stop</button>
+          <button class="pill" data-stops="2">2+ Stops</button>
+        </div>
+        <div class="filter-pill-group">
+          <span class="filter-label">Max Price:</span>
+          <input type="range" class="price-range-slider" id="flightMaxPrice" min="0" max="5000" value="5000" step="50">
+          <span id="flightPriceLabel">$5,000</span>
+        </div>
+        <div class="filter-pill-group">
+          <span class="filter-label">Sort:</span>
+          <select class="form-control form-select" id="flightSort">
+            <option value="price">Cheapest</option>
+            <option value="duration">Fastest</option>
+            <option value="departure">Earliest Departure</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="results-bar" style="margin-top: 1rem;">
+        <p class="results-count" id="flightResultsCount"></p>
+      </div>
+      
+      <div class="flights-list" id="flightsList"><!-- flight cards by JS --></div>
+    </div>
+  </section>
+
+  <!-- Booking Confirmation Modal -->
+  <dialog class="modal" id="flightBookingModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">✈️ Flight Booked!</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('flightBookingModal').close()">✕</button>
+      </div>
+      <div class="modal-body" id="flightModalBody">
+        <div class="booking-success" style="text-align:center; padding: 2rem 0;">
+          <div class="success-icon" style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+          <p style="font-size: 1.2rem; font-weight: 500; margin-bottom: 1rem;">Your flight has been booked successfully!</p>
+          <div class="flight-booking-details" id="flightBookingDetails" style="text-align:left; background: var(--bg-alt); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-light);"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="./profile.html" class="btn btn-primary">View Bookings</a>
+        <button class="btn btn-ghost" onclick="document.getElementById('flightBookingModal').close()">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/flights.js"></script>
+</body>
+</html>

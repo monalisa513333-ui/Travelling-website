@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Hotel Details">
+  <title>Hotel Details | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/hotels.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link active">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Photo carousel at top -->
+  <div class="hotel-photo-carousel" id="hotelCarousel">
+    <div class="carousel-main">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Hotel View" class="carousel-main-img" id="carouselMainImg">
+      <button class="carousel-btn prev" onclick="carouselPrev()">‹</button>
+      <button class="carousel-btn next" onclick="carouselNext()">›</button>
+    </div>
+    <div class="carousel-thumbs" id="carouselThumbs"></div>
+  </div>
+
+  <div class="container" style="margin-top:2rem; margin-bottom: 4rem;">
+    <nav class="breadcrumb"><a href="./index.html">Home</a> › <a href="./hotels.html">Hotels</a> › <span id="hotelBreadcrumb">Loading...</span></nav>
+    
+    <div class="detail-layout">
+      <div class="detail-main">
+        <!-- Hotel Info Header -->
+        <div class="hotel-info-header">
+          <div>
+            <div class="hotel-stars" id="hotelStars">⭐⭐⭐⭐⭐</div>
+            <h1 id="hotelName">Loading...</h1>
+            <p class="hotel-location" id="hotelLocation">📍 </p>
+            <div class="hotel-rating-row">
+              <span id="hotelRatingStars">⭐⭐⭐⭐⭐</span>
+              <span class="hotel-rating-num" id="hotelRatingNum"></span>
+              <span class="hotel-review-count" id="hotelReviewCount"></span>
+            </div>
+          </div>
+          <div class="hotel-price-display">
+            <span class="card-price-amount" id="hotelPrice"></span>
+            <span class="card-price-unit">/night</span>
+          </div>
+        </div>
+        
+        <!-- Amenities Strip -->
+        <div class="amenities-strip" id="hotelAmenities"></div>
+        
+        <!-- Tabs -->
+        <div class="tabs-container">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="rooms">🛏️ Rooms</button>
+            <button class="tab-btn" data-tab="amenities">✨ Amenities</button>
+            <button class="tab-btn" data-tab="location">📍 Location</button>
+            <button class="tab-btn" data-tab="reviews">⭐ Reviews</button>
+          </div>
+          
+          <div class="tab-panel active" id="htTabRooms">
+            <div class="rooms-grid" id="roomsGrid"><!-- room cards by JS --></div>
+          </div>
+          
+          <div class="tab-panel" id="htTabAmenities">
+            <div class="amenities-full-grid" id="amenitiesFull"></div>
+            <div id="hotelDescription" style="margin-top:2rem; line-height: 1.8; color: var(--text-light);"></div>
+          </div>
+          
+          <div class="tab-panel" id="htTabLocation">
+            <div class="map-placeholder">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799160891!2d-74.26055617862516!3d40.69767006856176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1234" width="100%" height="400" style="border:0;border-radius:var(--radius-md)" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="htTabReviews">
+            <div id="hotelReviews"></div>
+          </div>
+        </div>
+      </div>
+      
+      <aside class="detail-sidebar">
+        <div class="booking-box">
+          <h3>Book Your Stay</h3>
+          <form id="hotelBookingForm">
+            <div class="form-group">
+              <label class="form-label">Check-in</label>
+              <input type="date" class="form-control" id="htCheckin" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Check-out</label>
+              <input type="date" class="form-control" id="htCheckout" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Room Type</label>
+              <select class="form-control form-select" id="htRoomType" required>
+                <option value="" disabled selected>Select Room</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Guests</label>
+              <select class="form-control form-select" id="htGuests">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+              </select>
+            </div>
+            <div class="booking-summary">
+              <div class="booking-price-row"><span>Room price</span><span id="htRoomPrice">$0</span></div>
+              <div class="booking-price-row"><span>× nights</span><span id="htNights">0</span></div>
+              <div class="booking-price-row"><span>Taxes (12%)</span><span id="htTax">$0</span></div>
+              <div class="booking-total"><span>Total</span><span id="htTotal">$0</span></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full btn-lg">Book Now</button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <dialog class="modal" id="hotelBookingModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">🎉 Booking Confirmed!</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('hotelBookingModal').close()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="booking-success" style="text-align: center; padding: 2rem 0;">
+          <div class="success-icon" style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+          <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">Your hotel room has been booked!</p>
+          <p>Booking ID: <strong id="hotelBookingRef"></strong></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="./profile.html" class="btn btn-primary">View Bookings</a>
+        <button class="btn btn-ghost" onclick="document.getElementById('hotelBookingModal').close()">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/hotel-detail.js"></script>
+</body>
+</html>

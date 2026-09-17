@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Discover the World's Most Beautiful Places">
+  <title>Home | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/home.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link active">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920&q=90');">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content text-center">
+        <span class="badge hero-badge">🌍 Your Ultimate Travel Companion</span>
+        <h1 class="hero-title">Discover the <span>World's</span><br>Most Beautiful Places</h1>
+        <p class="hero-subtitle">Plan your perfect journey with expert guides, exclusive deals, and unforgettable experiences tailored just for you.</p>
+        <div class="hero-buttons">
+          <a href="./destinations.html" class="btn btn-primary btn-lg">Explore Destinations</a>
+          <a href="./packages.html" class="btn btn-outline btn-lg" style="color: white; border-color: white;">View Packages</a>
+        </div>
+        <div class="hero-stats-bar">
+          <span><strong>50K+</strong> Happy Travelers</span>
+          <span class="divider"></span>
+          <span><strong>200+</strong> Destinations</span>
+          <span class="divider"></span>
+          <span><strong>98%</strong> Satisfaction</span>
+          <span class="divider"></span>
+          <span><strong>15+</strong> Years Experience</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero Search Bar -->
+    <div class="hero-search-wrapper">
+      <div class="container">
+        <div class="hero-search-card">
+          <div class="search-tabs">
+            <button class="search-tab active" data-tab="hotels">🏨 Hotels</button>
+            <button class="search-tab" data-tab="flights">✈️ Flights</button>
+            <button class="search-tab" data-tab="packages">📦 Packages</button>
+          </div>
+          <form class="search-form" id="heroSearchForm">
+            <div class="search-inputs">
+              <div class="search-input-group">
+                <label>📍 Destination</label>
+                <input type="text" placeholder="Where do you want to go?" class="form-control" id="searchDest">
+              </div>
+              <div class="search-input-group">
+                <label>📅 Check-in</label>
+                <input type="date" class="form-control" id="searchCheckin">
+              </div>
+              <div class="search-input-group">
+                <label>📅 Check-out</label>
+                <input type="date" class="form-control" id="searchCheckout">
+              </div>
+              <div class="search-input-group">
+                <label>👥 Guests</label>
+                <select class="form-control form-select" id="searchGuests">
+                  <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4+ Guests</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg search-btn">🔍 Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular Destinations Section -->
+    <section class="section popular-destinations">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Top Picks</span>
+          <h2 class="section-title">Popular <span>Destinations</span></h2>
+          <p class="section-subtitle">Hand-picked destinations loved by thousands of travelers around the world</p>
+        </div>
+        <div class="category-pills" id="categoryPills">
+          <button class="pill active" data-cat="all">All</button>
+          <button class="pill" data-cat="beach">🏖️ Beach</button>
+          <button class="pill" data-cat="mountain">⛰️ Mountain</button>
+          <button class="pill" data-cat="city">🏙️ City</button>
+          <button class="pill" data-cat="culture">🏛️ Culture</button>
+          <button class="pill" data-cat="safari">🦁 Safari</button>
+        </div>
+        <div class="grid-4" id="destinationsGrid"></div>
+        <div class="text-center" style="margin-top:2rem">
+          <a href="./destinations.html" class="btn btn-outline">View All Destinations →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section features-section" style="background: var(--bg-alt)">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Why TravelVerse</span>
+          <h2 class="section-title">Travel Smarter, <span>Not Harder</span></h2>
+        </div>
+        <div class="grid-4" id="featuresGrid">
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">Safe & Secure</h3>
+            <p>All bookings are insured and protected. Travel with complete peace of mind.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h3 class="feature-title">Best Price Guarantee</h3>
+            <p>We match any lower price you find. Get the best deals on every booking.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3 class="feature-title">200+ Destinations</h3>
+            <p>Explore our vast network of handpicked destinations across all continents.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3 class="feature-title">24/7 Support</h3>
+            <p>Our travel experts are always available to assist you at any time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Tour Packages Section -->
+    <section class="section featured-packages">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-eyebrow">Special Offers</span>
+          <h2 class="section-title">Featured Tour <span>Packages</span></h2>
+          <p class="section-subtitle">Discover our most popular curated travel experiences</p>
+        </div>
+        <div class="grid-3" id="packagesGrid"></div>
+        <div class="text-center" style="margin-top:2rem">
+          <a href="./packages.html" class="btn btn-outline">View All Packages →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Counter Section -->
+    <section class="section stats-counter" style="background-color: var(--primary-dark); color: white;">
+      <div class="container">
+        <div class="grid-4 text-center">
+          <div class="stat-item">
+            <h2 class="stat-number"><span data-counter="50000">0</span>+</h2>
+            <p class="stat-label">Trips Booked</p>
+          </div>
+          <div class="stat-item">
+            <h2 class="stat-number"><span data-counter="200">0</span>+</h2>
+            <p class="stat-label">Destinations</p>
+          </div>
+          <div class="stat-item">
+            <h2 class="stat-number"><span data-counter="98">0</span>+</h2>
+            <p class="stat-label">Satisfaction %</p>
+          </div>
+          <div class="stat-item">
+            <h2 class="stat-number"><span data-counter="15">0</span>+</h2>
+            <p class="stat-label">Years Experience</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-eyebrow">Reviews</span>
+          <h2 class="section-title">What Our Travelers <span>Say</span></h2>
+        </div>
+        <div class="testimonial-carousel" id="testimonialCarousel">
+          <!-- Populated by JS or mock data -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter CTA Section -->
+    <section class="section newsletter-cta text-center" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+      <div class="container">
+        <div class="newsletter-content" style="max-width: 600px; margin: 0 auto;">
+          <h2 style="margin-bottom: 1rem; color: white;">Ready to Start Your Adventure?</h2>
+          <p style="margin-bottom: 2rem; color: var(--primary-xlight);">Subscribe to get exclusive deals and travel inspiration</p>
+          <form class="newsletter-form-large" onsubmit="handleNewsletterSubmit(event)" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <input type="email" placeholder="Your email address" class="form-control" required style="flex: 1; padding: 1rem; border-radius: var(--radius-md);">
+            <button type="submit" class="btn btn-accent btn-lg" style="background-color: var(--accent); color: white;">Subscribe</button>
+          </form>
+          <p class="small-print" style="font-size: var(--fs-xs); color: var(--primary-light);">No spam ever. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/home.js"></script>
+</body>
+</html>

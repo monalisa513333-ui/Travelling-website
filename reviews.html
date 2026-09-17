@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Traveler Reviews">
+  <title>Reviews | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/reviews.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <style>
+    .rating-overview { display: flex; justify-content: center; margin-bottom: 2rem; }
+    .rating-overview-card { background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-md); display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; width: 100%; max-width: 900px; }
+    .overall-score { text-align: center; }
+    .score-number { font-size: 3rem; font-weight: 700; color: var(--text); line-height: 1; }
+    .score-stars { color: #f59e0b; font-size: 1.5rem; margin: 0.5rem 0; }
+    .score-label { font-weight: 600; margin: 0; }
+    .score-count { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+    .rating-breakdown { flex: 1; min-width: 200px; }
+    .breakdown-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .breakdown-row .progress { flex: 1; height: 8px; background: var(--border-light); border-radius: var(--radius-full); overflow: hidden; }
+    .breakdown-row .progress-bar { height: 100%; background: #f59e0b; }
+    .rating-categories { display: flex; flex-direction: column; gap: 0.5rem; min-width: 150px; }
+    .rating-cat { display: flex; justify-content: space-between; font-size: 0.95rem; }
+    
+    .write-review-cta { text-align: center; margin: 2rem 0; padding: 2rem; background: var(--bg-alt); border-radius: var(--radius-md); }
+    .reviews-filter-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .filter-pills .pill { background: var(--bg-card); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: var(--radius-full); cursor: pointer; transition: var(--transition); }
+    .filter-pills .pill.active, .filter-pills .pill:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .review-card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); }
+    .review-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .reviewer-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; }
+    .reviewer-info h4 { margin: 0; font-size: 1rem; }
+    .reviewer-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted); }
+    .review-rating { color: #f59e0b; margin-bottom: 0.5rem; }
+    .review-title { font-weight: 600; margin-bottom: 0.5rem; }
+    .review-body { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1rem; line-height: 1.5; }
+    .review-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-light); padding-top: 0.75rem; }
+    .helpful-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
+    .helpful-btn:hover { color: var(--primary); }
+    
+    .star-input-group { display: flex; gap: 0.25rem; font-size: 1.75rem; color: #ccc; cursor: pointer; }
+    .star-input-group .star-input { transition: color 0.2s; }
+    .star-input-group .star-input.active, .star-input-group .star-input:hover { color: #f59e0b; }
+    .modal-card { width: 100%; max-width: 500px; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); position: relative; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link active">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">⭐ Traveler Reviews</h1>
+      <p class="page-header-subtitle">Real experiences from 50,000+ satisfied travelers</p>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+      <!-- Overall Rating Summary -->
+      <div class="rating-overview">
+        <div class="rating-overview-card">
+          <div class="overall-score">
+            <span class="score-number">4.8</span>
+            <div class="score-stars">★★★★★</div>
+            <p class="score-label">Overall Rating</p>
+            <p class="score-count">Based on 12,483 reviews</p>
+          </div>
+          <div class="rating-breakdown">
+            <div class="breakdown-row">
+              <span>5 ★</span>
+              <div class="progress"><div class="progress-bar" style="width:72%"></div></div>
+              <span>72%</span>
+            </div>
+            <div class="breakdown-row">
+              <span>4 ★</span>
+              <div class="progress"><div class="progress-bar" style="width:18%"></div></div>
+              <span>18%</span>
+            </div>
+            <div class="breakdown-row">
+              <span>3 ★</span>
+              <div class="progress"><div class="progress-bar" style="width:6%"></div></div>
+              <span>6%</span>
+            </div>
+            <div class="breakdown-row">
+              <span>2 ★</span>
+              <div class="progress"><div class="progress-bar" style="width:3%"></div></div>
+              <span>3%</span>
+            </div>
+            <div class="breakdown-row">
+              <span>1 ★</span>
+              <div class="progress"><div class="progress-bar" style="width:1%"></div></div>
+              <span>1%</span>
+            </div>
+          </div>
+          <div class="rating-categories">
+            <div class="rating-cat"><span>Destinations</span><span class="fw-bold text-primary">4.9</span></div>
+            <div class="rating-cat"><span>Hotels</span><span class="fw-bold text-primary">4.7</span></div>
+            <div class="rating-cat"><span>Packages</span><span class="fw-bold text-primary">4.8</span></div>
+            <div class="rating-cat"><span>Support</span><span class="fw-bold text-primary">4.9</span></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Write a Review CTA -->
+      <div class="write-review-cta">
+        <h3>Share Your Experience</h3>
+        <p>Help fellow travelers by sharing your journey</p>
+        <button class="btn btn-primary" onclick="document.getElementById('writeReviewModal').showModal()">✍️ Write a Review</button>
+      </div>
+      
+      <!-- Filter Bar -->
+      <div class="reviews-filter-bar">
+        <div class="filter-pills">
+          <button class="pill active" data-rfilter="all">All Reviews</button>
+          <button class="pill" data-rfilter="5">⭐⭐⭐⭐⭐ 5 Star</button>
+          <button class="pill" data-rfilter="4">⭐⭐⭐⭐ 4 Star</button>
+          <button class="pill" data-rfilter="3">⭐⭐⭐ 3 Star</button>
+        </div>
+        <select class="form-control form-select" id="reviewSort" style="width:auto">
+          <option value="recent">Most Recent</option>
+          <option value="helpful">Most Helpful</option>
+          <option value="rating-high">Highest Rated</option>
+          <option value="rating-low">Lowest Rated</option>
+        </select>
+      </div>
+      
+      <!-- Reviews Grid -->
+      <div class="reviews-grid" id="reviewsGrid"><!-- review cards by JS --></div>
+      
+      <div class="text-center" style="margin-top:2rem">
+        <button class="btn btn-outline" id="loadMoreReviews">Load More Reviews</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Write Review Modal -->
+  <dialog class="modal" id="writeReviewModal">
+    <div class="modal-card">
+      <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 class="modal-title" style="margin:0">✍️ Write a Review</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('writeReviewModal').close()" style="border:none;background:none;font-size:1.5rem;cursor:pointer;">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="reviewForm" onsubmit="event.preventDefault(); submitReview();">
+          <div class="form-group">
+            <label class="form-label required">Destination / Service</label>
+            <select class="form-control form-select" id="reviewDest" required>
+              <option value="">Select a destination</option>
+              <option>Bali, Indonesia</option><option>Paris, France</option><option>Maldives</option>
+              <option>Tokyo, Japan</option><option>Santorini, Greece</option><option>Safari, Kenya</option>
+              <option>New York, USA</option><option>Dubai, UAE</option><option>Machu Picchu, Peru</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Your Rating</label>
+            <div class="star-input-group" id="starInput">
+              <span class="star-input" data-value="1">☆</span>
+              <span class="star-input" data-value="2">☆</span>
+              <span class="star-input" data-value="3">☆</span>
+              <span class="star-input" data-value="4">☆</span>
+              <span class="star-input" data-value="5">☆</span>
+            </div>
+            <input type="hidden" id="ratingValue" name="rating" value="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Review Title</label>
+            <input type="text" class="form-control" id="reviewTitle" placeholder="Summarize your experience" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Your Review</label>
+            <textarea class="form-control form-textarea" id="reviewBody" placeholder="Tell us about your experience..." rows="5" required></textarea>
+          </div>
+          <div class="form-group" id="reviewNameGroup">
+            <label class="form-label">Your Name (optional)</label>
+            <input type="text" class="form-control" id="reviewerName" placeholder="Leave blank to stay anonymous">
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:1.5rem;">
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('writeReviewModal').close()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+
+  <script>
+    // Inline Script for Reviews
+    const MOCK_REVIEWS = [
+      { id: '1', userName: 'Sarah Jenkins', destination: 'Bali, Indonesia', rating: 5, title: 'Incredible experience!', body: 'Our trip to Bali was absolutely perfect. The itinerary was well thought out, the hotels were stunning, and the local guides were incredibly knowledgeable.', date: '2023-10-12', helpful: 45 },
+      { id: '2', userName: 'Michael T.', destination: 'Paris, France', rating: 4, title: 'Romantic getaway', body: 'The Paris package was great. Loved the Seine river cruise. Only giving 4 stars because our flight got delayed, but TravelVerse support helped us rebook our airport transfer.', date: '2023-09-28', helpful: 32 },
+      { id: '3', userName: 'Anonymous', destination: 'Safari, Kenya', rating: 5, title: 'Once in a lifetime!', body: 'Seeing the great migration was breathtaking. The glamping tents were much more luxurious than expected. Worth every penny.', date: '2023-08-15', helpful: 89 },
+      { id: '4', userName: 'David R.', destination: 'Tokyo, Japan', rating: 5, title: 'Flawless execution', body: 'Japan can be overwhelming to plan, but this made it so easy. The bullet train passes and pocket Wi-Fi included in the package were lifesavers.', date: '2023-11-02', helpful: 56 },
+      { id: '5', userName: 'Elena Gomez', destination: 'Santorini, Greece', rating: 3, title: 'Beautiful but crowded', body: 'The views were amazing, but July is extremely busy. I wish the travel agent had recommended going in September instead.', date: '2023-07-20', helpful: 12 },
+      { id: '6', userName: 'Chris P.', destination: 'Maldives', rating: 5, title: 'Perfect honeymoon', body: 'The overwater bungalow exceeded our expectations. The all-inclusive meal plan is a must. Thank you for a memorable honeymoon!', date: '2023-12-05', helpful: 104 }
+    ];
+
+    let allReviews = [];
+    let currentFilter = 'all';
+    let currentSort = 'recent';
+    let visibleCount = 6;
+
+    function initReviews() {
+      // Load reviews
+      const stored = JSON.parse(localStorage.getItem('tv_reviews') || '[]');
+      allReviews = [...stored, ...MOCK_REVIEWS];
+      
+      setupStarInput();
+      setupFiltersAndSort();
+      renderReviews();
+      
+      document.getElementById('loadMoreReviews').addEventListener('click', () => {
+        visibleCount += 6;
+        renderReviews();
+      });
+    }
+
+    function setupStarInput() {
+      const stars = document.querySelectorAll('.star-input');
+      const ratingInput = document.getElementById('ratingValue');
+      
+      stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+          const val = this.dataset.value;
+          stars.forEach(s => {
+            s.textContent = s.dataset.value <= val ? '★' : '☆';
+            s.style.color = s.dataset.value <= val ? '#f59e0b' : '#ccc';
+          });
+        });
+        
+        star.addEventListener('mouseout', function() {
+          const val = ratingInput.value;
+          stars.forEach(s => {
+            s.textContent = s.dataset.value <= val ? '★' : '☆';
+            s.style.color = s.dataset.value <= val ? '#f59e0b' : '#ccc';
+          });
+        });
+        
+        star.addEventListener('click', function() {
+          ratingInput.value = this.dataset.value;
+        });
+      });
+    }
+
+    function setupFiltersAndSort() {
+      const filterPills = document.querySelectorAll('.filter-pills .pill');
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          filterPills.forEach(p => p.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilter = e.target.dataset.rfilter;
+          visibleCount = 6;
+          renderReviews();
+        });
+      });
+
+      document.getElementById('reviewSort').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderReviews();
+      });
+    }
+
+    function renderReviews() {
+      const grid = document.getElementById('reviewsGrid');
+      grid.innerHTML = '';
+      
+      // Filter
+      let filtered = allReviews.filter(r => currentFilter === 'all' || r.rating.toString() === currentFilter);
+      
+      // Sort
+      filtered.sort((a, b) => {
+        if (currentSort === 'recent') return new Date(b.date) - new Date(a.date);
+        if (currentSort === 'helpful') return b.helpful - a.helpful;
+        if (currentSort === 'rating-high') return b.rating - a.rating;
+        if (currentSort === 'rating-low') return a.rating - b.rating;
+        return 0;
+      });
+      
+      // Slice and render
+      const toShow = filtered.slice(0, visibleCount);
+      
+      if(toShow.length === 0) {
+        grid.innerHTML = '<p class="text-muted" style="grid-column:1/-1;text-align:center;">No reviews found matching criteria.</p>';
+      }
+
+      toShow.forEach(r => {
+        const initial = r.userName ? r.userName.charAt(0).toUpperCase() : 'A';
+        const name = r.userName || 'Anonymous';
+        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        const dateStr = new Date(r.date).toLocaleDateString();
+        
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div class="review-header">
+            <div class="reviewer-avatar">${initial}</div>
+            <div class="reviewer-info">
+              <h4>${name}</h4>
+              <p>${r.destination}</p>
+            </div>
+          </div>
+          <div class="review-rating">${stars}</div>
+          <div class="review-title">"${r.title}"</div>
+          <div class="review-body">${r.body}</div>
+          <div class="review-footer">
+            <span>Posted on ${dateStr}</span>
+            <button class="helpful-btn" onclick="markHelpful(this, '${r.id}')">👍 Helpful (<span class="helpful-count">${r.helpful || 0}</span>)</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      const loadMoreBtn = document.getElementById('loadMoreReviews');
+      if (visibleCount >= filtered.length) {
+        loadMoreBtn.style.display = 'none';
+      } else {
+        loadMoreBtn.style.display = 'inline-block';
+      }
+    }
+
+    window.markHelpful = function(btn, id) {
+      if(btn.dataset.clicked) return;
+      btn.dataset.clicked = true;
+      const countSpan = btn.querySelector('.helpful-count');
+      if (countSpan) {
+        countSpan.textContent = parseInt(countSpan.textContent) + 1;
+      }
+      btn.style.color = 'var(--primary)';
+    }
+
+    window.submitReview = function() {
+      const dest = document.getElementById('reviewDest').value;
+      const rating = document.getElementById('ratingValue').value;
+      const title = document.getElementById('reviewTitle').value;
+      const body = document.getElementById('reviewBody').value;
+      const name = document.getElementById('reviewerName').value;
+      
+      if(!dest || rating === "0" || !title || !body) {
+        alert("Please fill out all required fields and provide a rating.");
+        return;
+      }
+      
+      const newReview = {
+        id: Date.now().toString(),
+        userId: 'local',
+        userName: name || 'Anonymous',
+        destination: dest,
+        rating: parseInt(rating),
+        title,
+        body,
+        date: new Date().toISOString().split('T')[0],
+        helpful: 0
+      };
+      
+      // Save to localStorage
+      const stored = JSON.parse(localStorage.getItem('tv_reviews') || '[]');
+      stored.unshift(newReview);
+      localStorage.setItem('tv_reviews', JSON.stringify(stored));
+      
+      // Update local state
+      allReviews.unshift(newReview);
+      renderReviews();
+      
+      // Cleanup & Close
+      document.getElementById('reviewForm').reset();
+      document.getElementById('ratingValue').value = "0";
+      document.querySelectorAll('.star-input').forEach(s => {
+        s.textContent = '☆';
+        s.style.color = '#ccc';
+      });
+      document.getElementById('writeReviewModal').close();
+      
+      alert("Thank you for your review!");
+    };
+
+    document.addEventListener('DOMContentLoaded', initReviews);
+  </script>
+</body>
+</html>

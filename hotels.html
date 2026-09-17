@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Find Your Perfect Hotel">
+  <title>Hotels | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/hotels.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link active">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Find Your Perfect Hotel</h1>
+      <p class="page-header-subtitle">Handpicked accommodations with verified reviews</p>
+    </div>
+  </div>
+
+  <!-- Hotel Search Form -->
+  <div class="hotel-search-bar">
+    <div class="container">
+      <form class="hotel-search-form" id="hotelSearchForm">
+        <div class="hotel-search-fields">
+          <div class="search-field">
+            <label>📍 Destination</label>
+            <input type="text" class="form-control" id="hotelDest" placeholder="City or hotel name">
+          </div>
+          <div class="search-field">
+            <label>📅 Check-in</label>
+            <input type="date" class="form-control" id="hotelCheckin">
+          </div>
+          <div class="search-field">
+            <label>📅 Check-out</label>
+            <input type="date" class="form-control" id="hotelCheckout">
+          </div>
+          <div class="search-field">
+            <label>🛏️ Rooms</label>
+            <select class="form-control form-select" id="hotelRooms">
+              <option>1 Room</option><option>2 Rooms</option><option>3 Rooms</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>👥 Guests</label>
+            <select class="form-control form-select" id="hotelGuests">
+              <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary search-btn">🔍 Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+      <div class="page-layout">
+        <!-- Sidebar -->
+        <aside class="filter-sidebar page-layout-sidebar">
+          <div class="filter-sidebar-header">
+            <h3>🎛️ Filter Hotels</h3>
+            <button class="btn btn-ghost btn-sm" id="clearHotelFilters">Clear</button>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Star Rating</h4>
+            <div class="star-filter" id="starFilter">
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="5"><span>⭐⭐⭐⭐⭐ 5 Stars</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="4"><span>⭐⭐⭐⭐ 4 Stars</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="3"><span>⭐⭐⭐ 3 Stars</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="2"><span>⭐⭐ 2 Stars</span></label>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Price per Night</h4>
+            <input type="range" class="price-range-slider" id="hotelMaxPrice" min="0" max="2000" value="2000" step="50">
+            <div class="price-range-labels"><span>$0</span><span id="hotelPriceLabel">$2,000</span></div>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Amenities</h4>
+            <div class="filter-checks">
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="Pool"><span>🏊 Pool</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="WiFi"><span>📶 Free WiFi</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="Spa"><span>💆 Spa</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="Gym"><span>💪 Gym</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="Restaurant"><span>🍽️ Restaurant</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="Parking"><span>🅿️ Parking</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="Beach Access"><span>🏖️ Beach Access</span></label>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <h4 class="filter-group-title">Hotel Type</h4>
+            <div class="filter-checks">
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="luxury"><span>💎 Luxury</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="boutique"><span>🌿 Boutique</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="resort"><span>🌴 Resort</span></label>
+              <label class="form-check"><input type="checkbox" class="form-check-input" value="budget"><span>💰 Budget</span></label>
+            </div>
+          </div>
+        </aside>
+        
+        <main>
+          <div class="results-bar">
+            <p class="results-count" id="hotelResultsCount">Showing 20 hotels</p>
+            <select class="form-control form-select sort-select" id="hotelSort">
+              <option value="popular">Most Popular</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+              <option value="stars">Star Rating</option>
+            </select>
+          </div>
+          <div class="grid-2" id="hotelsGrid"><!-- hotel cards by JS --></div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/hotels.js"></script>
+</body>
+</html>

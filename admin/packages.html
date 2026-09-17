@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Packages | TravelVerse Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-topbar">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+  <div class="admin-topbar-brand">
+    <span class="logo-icon">✈</span> TravelVerse Admin
+  </div>
+  <div class="admin-topbar-actions">
+    <span class="admin-user-name" id="adminUserName"></span>
+    <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+    <a href="../index.html" class="btn btn-outline btn-sm" target="_blank">View Site ↗</a>
+  </div>
+</div>
+
+<aside class="sidebar" id="adminSidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <a href="./index.html" class="sidebar-link" data-page="dashboard">
+      <span class="sidebar-icon">📊</span> Dashboard
+    </a>
+    <a href="./users.html" class="sidebar-link" data-page="users">
+      <span class="sidebar-icon">👥</span> Users
+    </a>
+    <a href="./bookings.html" class="sidebar-link" data-page="bookings">
+      <span class="sidebar-icon">📋</span> Bookings
+    </a>
+    <a href="./packages.html" class="sidebar-link active" data-page="packages">
+      <span class="sidebar-icon">📦</span> Packages
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Content</div>
+    <a href="../destinations.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">🗺️</span> Destinations ↗
+    </a>
+    <a href="../reviews.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">⭐</span> Reviews ↗
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Account</div>
+    <a href="../profile.html" class="sidebar-link">
+      <span class="sidebar-icon">👤</span> My Profile
+    </a>
+    <button class="sidebar-link sidebar-logout" onclick="Auth.logout()">
+      <span class="sidebar-icon">🚪</span> Logout
+    </button>
+  </nav>
+</aside>
+
+<main class="admin-main" id="adminMain">
+  <div class="admin-page-header">
+    <div>
+      <h1>📦 Manage Packages</h1>
+      <p class="text-muted" id="packagesTotalCount">Loading...</p>
+    </div>
+    <button class="btn btn-primary" onclick="openAddPackageModal()">+ Add Package</button>
+  </div>
+
+  <div class="admin-filter-bar">
+    <input type="text" class="form-control" id="packageSearch" placeholder="🔍 Search packages..." style="max-width:300px">
+    <select class="form-control form-select" id="packageCatFilter" style="width:auto">
+      <option value="all">All Categories</option>
+      <option value="beach">Beach</option>
+      <option value="adventure">Adventure</option>
+      <option value="cultural">Cultural</option>
+      <option value="luxury">Luxury</option>
+      <option value="family">Family</option>
+    </select>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-body">
+      <div class="table-wrapper">
+        <table class="data-table" id="packagesTable">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Destination</th>
+              <th>Price</th>
+              <th>Duration</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="packagesTbody"><!-- by JS --></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Package Modal -->
+  <dialog class="modal" id="packageModal">
+    <div class="modal-card" style="max-width:700px">
+      <div class="modal-header">
+        <h3 class="modal-title" id="packageModalTitle">Add New Package</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('packageModal').close()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="packageForm" onsubmit="event.preventDefault(); savePackage();">
+          <input type="hidden" id="editPackageId">
+          <div class="form-row" style="display:flex; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="flex:1">
+              <label class="form-label required">Package Title</label>
+              <input type="text" class="form-control" id="pkgFormTitle" required>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label required">Destination</label>
+              <input type="text" class="form-control" id="pkgFormDestination" required>
+            </div>
+          </div>
+          <div class="form-row" style="display:flex; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="flex:1">
+              <label class="form-label required">Price (USD)</label>
+              <input type="number" class="form-control" id="pkgFormPrice" min="0" required>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label required">Duration (days)</label>
+              <input type="number" class="form-control" id="pkgFormDuration" min="1" required>
+            </div>
+          </div>
+          <div class="form-row" style="display:flex; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Max Group Size</label>
+              <input type="number" class="form-control" id="pkgFormGroupSize" min="1">
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Difficulty</label>
+              <select class="form-control form-select" id="pkgFormDifficulty">
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="challenging">Challenging</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Category</label>
+            <select class="form-control form-select" id="pkgFormCategory">
+              <option value="beach">Beach</option>
+              <option value="adventure">Adventure</option>
+              <option value="cultural">Cultural</option>
+              <option value="luxury">Luxury</option>
+              <option value="family">Family</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Image URL</label>
+            <input type="url" class="form-control" id="pkgFormImage" placeholder="https://images.unsplash.com/...">
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label required">Description</label>
+            <textarea class="form-control form-textarea" id="pkgFormDescription" rows="4" required></textarea>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Inclusions (comma-separated)</label>
+            <input type="text" class="form-control" id="pkgFormInclusions" placeholder="Hotel, Breakfast, Airport Transfer">
+          </div>
+          <div class="modal-footer" style="padding:0; margin-top:2rem; justify-content:flex-end">
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('packageModal').close()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Package</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Delete Confirm Modal -->
+  <dialog class="modal" id="deleteConfirmModal">
+    <div class="modal-card" style="max-width:400px">
+      <div class="modal-header">
+        <h3 class="modal-title">⚠️ Confirm Delete</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('deleteConfirmModal').close()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this package? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="document.getElementById('deleteConfirmModal').close()">Cancel</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </dialog>
+</main>
+
+  <script src="../js/data/destinations.js"></script>
+  <script src="../js/data/hotels.js"></script>
+  <script src="../js/data/flights.js"></script>
+  <script src="../js/data/packages.js"></script>
+  <script src="../js/data/reviews.js"></script>
+  <script src="../js/modules/utils.js"></script>
+  <script src="../js/modules/auth.js"></script>
+  <script src="../js/modules/booking.js"></script>
+  <script src="../js/modules/admin.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    let allPackages = [];
+    let customPackages = [];
+    let packageToDelete = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.Auth || !window.Auth.isAdmin()) {
+        window.location.href = '../index.html';
+        return;
+      }
+      const user = window.Auth.getCurrentUser();
+      if(user) document.getElementById('adminUserName').textContent = user.name;
+
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('active');
+        });
+      }
+
+      loadPackagesData();
+      renderPackagesTable();
+
+      document.getElementById('packageSearch').addEventListener('input', renderPackagesTable);
+      document.getElementById('packageCatFilter').addEventListener('change', renderPackagesTable);
+      
+      document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if(packageToDelete) {
+          customPackages = customPackages.filter(p => p.id !== packageToDelete);
+          localStorage.setItem('tv_packages_custom', JSON.stringify(customPackages));
+          loadPackagesData();
+          renderPackagesTable();
+          document.getElementById('deleteConfirmModal').close();
+          packageToDelete = null;
+        }
+      });
+    });
+
+    function loadPackagesData() {
+      try {
+        customPackages = JSON.parse(localStorage.getItem('tv_packages_custom') || '[]');
+      } catch(e) {}
+      
+      allPackages = [...(window.PACKAGES || []), ...customPackages];
+    }
+
+    function renderPackagesTable() {
+      const search = document.getElementById('packageSearch').value.toLowerCase();
+      const cat = document.getElementById('packageCatFilter').value;
+
+      let filtered = allPackages.filter(p => {
+        const matchSearch = p.title.toLowerCase().includes(search) || p.destination.toLowerCase().includes(search);
+        const matchCat = cat === 'all' || p.category === cat;
+        return matchSearch && matchCat;
+      });
+
+      document.getElementById('packagesTotalCount').textContent = 'Total packages: ' + filtered.length;
+
+      const tbody = document.getElementById('packagesTbody');
+      if(filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No packages found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const isCustom = typeof p.id === 'string' && p.id.startsWith('pkg_');
+        return '<tr>' +
+          '<td><img src="' + p.image + '" alt="" style="width:50px;height:50px;object-fit:cover;border-radius:4px"></td>' +
+          '<td>' + p.title + (isCustom ? ' <span class="status-badge pending" style="font-size:0.6rem">Custom</span>' : '') + '</td>' +
+          '<td>' + p.destination + '</td>' +
+          '<td>$' + p.price + '</td>' +
+          '<td>' + p.duration + ' Days</td>' +
+          '<td style="text-transform:capitalize">' + p.category + '</td>' +
+          '<td>' +
+            '<button class="btn btn-sm btn-outline" style="margin-right:0.5rem" onclick="openEditPackageModal(\\'' + p.id + '\\')">Edit</button>' +
+            (isCustom ? '<button class="btn btn-sm btn-outline text-danger" style="border-color:var(--danger)" onclick="confirmDeletePackage(\\'' + p.id + '\\')">Delete</button>' : '') +
+          '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    window.openAddPackageModal = function() {
+      document.getElementById('packageModalTitle').textContent = 'Add New Package';
+      document.getElementById('packageForm').reset();
+      document.getElementById('editPackageId').value = '';
+      document.getElementById('packageModal').showModal();
+    }
+
+    window.openEditPackageModal = function(id) {
+      const p = allPackages.find(x => String(x.id) === String(id));
+      if(!p) return;
+      document.getElementById('packageModalTitle').textContent = 'Edit Package';
+      document.getElementById('editPackageId').value = p.id;
+      document.getElementById('pkgFormTitle').value = p.title;
+      document.getElementById('pkgFormDestination').value = p.destination;
+      document.getElementById('pkgFormPrice').value = p.price;
+      document.getElementById('pkgFormDuration').value = p.duration;
+      document.getElementById('pkgFormGroupSize').value = p.groupSize || '';
+      document.getElementById('pkgFormDifficulty').value = p.difficulty || 'moderate';
+      document.getElementById('pkgFormCategory').value = p.category || 'adventure';
+      document.getElementById('pkgFormImage').value = p.image || '';
+      document.getElementById('pkgFormDescription').value = p.description || '';
+      document.getElementById('pkgFormInclusions').value = (p.inclusions || []).join(', ');
+      
+      document.getElementById('packageModal').showModal();
+    }
+
+    window.savePackage = function() {
+      const id = document.getElementById('editPackageId').value;
+      const p = {
+        title: document.getElementById('pkgFormTitle').value,
+        destination: document.getElementById('pkgFormDestination').value,
+        price: Number(document.getElementById('pkgFormPrice').value),
+        duration: Number(document.getElementById('pkgFormDuration').value),
+        groupSize: Number(document.getElementById('pkgFormGroupSize').value || 10),
+        difficulty: document.getElementById('pkgFormDifficulty').value,
+        category: document.getElementById('pkgFormCategory').value,
+        image: document.getElementById('pkgFormImage').value || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800',
+        description: document.getElementById('pkgFormDescription').value,
+        inclusions: document.getElementById('pkgFormInclusions').value.split(',').map(s=>s.trim()).filter(Boolean),
+        rating: 5.0,
+        reviews: 0
+      };
+
+      if(id) {
+        // Edit
+        const isCustom = String(id).startsWith('pkg_');
+        if (isCustom) {
+          const idx = customPackages.findIndex(x => x.id === id);
+          if(idx > -1) {
+            customPackages[idx] = { ...customPackages[idx], ...p };
+            localStorage.setItem('tv_packages_custom', JSON.stringify(customPackages));
+          }
+        } else {
+          alert('Cannot edit default static packages. Save as new custom package if needed.');
+          return;
+        }
+      } else {
+        // Add new
+        p.id = 'pkg_' + Date.now();
+        customPackages.push(p);
+        localStorage.setItem('tv_packages_custom', JSON.stringify(customPackages));
+      }
+      
+      document.getElementById('packageModal').close();
+      loadPackagesData();
+      renderPackagesTable();
+    }
+
+    window.confirmDeletePackage = function(id) {
+      packageToDelete = id;
+      document.getElementById('deleteConfirmModal').showModal();
+    }
+  </script>
+</body>
+</html>

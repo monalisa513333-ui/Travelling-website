@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Login or Register">
+  <title>Login / Sign Up | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/auth.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body class="auth-page">
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container" style="justify-content: center;">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="auth-wrapper">
+      <div class="auth-left">
+        <div class="auth-left-content">
+          <span class="logo-icon">✈</span>
+          <h2>Start Your Journey</h2>
+          <p>Join millions of travelers who discover the world with TravelVerse</p>
+          <div class="auth-features">
+            <div class="auth-feature">✅ Exclusive member deals</div>
+            <div class="auth-feature">✅ Manage all your bookings</div>
+            <div class="auth-feature">✅ Save your wishlist</div>
+            <div class="auth-feature">✅ 24/7 travel support</div>
+          </div>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="auth-card">
+          <div class="auth-logo">✈ <strong>TravelVerse</strong></div>
+          <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Login</button>
+            <button class="auth-tab" data-tab="register">Sign Up</button>
+          </div>
+          
+          <!-- Login Panel -->
+          <div class="auth-panel active" id="loginPanel">
+            <h2>Welcome Back!</h2>
+            <p class="auth-subtitle">Sign in to your account</p>
+            <form id="loginForm">
+              <div class="form-group">
+                <label class="form-label required">Email Address</label>
+                <input type="email" class="form-control" id="loginEmail" placeholder="john@example.com" required>
+                <span class="form-error" id="loginEmailError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Password</label>
+                <div class="input-with-icon">
+                  <input type="password" class="form-control" id="loginPassword" placeholder="Your password" required>
+                  <button type="button" class="toggle-password" aria-label="Show password">👁</button>
+                </div>
+                <span class="form-error" id="loginPasswordError"></span>
+              </div>
+              <div class="form-row form-check-row">
+                <label class="form-check">
+                  <input type="checkbox" id="rememberMe" class="form-check-input">
+                  <span>Remember me</span>
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full btn-lg">Sign In</button>
+              <p class="demo-hint">Demo: john@demo.com / password123</p>
+            </form>
+            <div class="social-divider"><span>or continue with</span></div>
+            <div class="social-auth">
+              <button class="btn btn-outline social-btn">🔵 Google</button>
+              <button class="btn btn-outline social-btn">🔷 Facebook</button>
+            </div>
+          </div>
+          
+          <!-- Register Panel -->
+          <div class="auth-panel" id="registerPanel">
+            <h2>Create Account</h2>
+            <p class="auth-subtitle">Join TravelVerse today</p>
+            <form id="registerForm">
+              <div class="form-group">
+                <label class="form-label required">Full Name</label>
+                <input type="text" class="form-control" id="regName" placeholder="John Doe" required>
+                <span class="form-error" id="regNameError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Email Address</label>
+                <input type="email" class="form-control" id="regEmail" placeholder="john@example.com" required>
+                <span class="form-error" id="regEmailError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Password</label>
+                <div class="input-with-icon">
+                  <input type="password" class="form-control" id="regPassword" placeholder="Min 8 characters" required>
+                  <button type="button" class="toggle-password" aria-label="Show password">👁</button>
+                </div>
+                <div class="password-strength" id="passwordStrength"></div>
+                <span class="form-error" id="regPasswordError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Confirm Password</label>
+                <input type="password" class="form-control" id="regConfirm" placeholder="Repeat password" required>
+                <span class="form-error" id="regConfirmError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-check">
+                  <input type="checkbox" id="agreeTerms" class="form-check-input" required>
+                  <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full btn-lg">Create Account</button>
+            </form>
+            <div class="social-divider"><span>or continue with</span></div>
+            <div class="social-auth">
+              <button class="btn btn-outline social-btn">🔵 Google</button>
+              <button class="btn btn-outline social-btn">🔷 Facebook</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/auth-page.js"></script>
+</body>
+</html>

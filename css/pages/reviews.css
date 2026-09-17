@@ -1,0 +1,9 @@
+/* reviews.css */
+.review-card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
+.review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.review-user { display: flex; align-items: center; gap: 1rem; }
+.rating-breakdown { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+.rating-bar-row { display: flex; align-items: center; gap: 1rem; }
+.rating-bar-container { flex: 1; height: 8px; background: var(--border-light); border-radius: var(--radius-full); overflow: hidden; }
+.rating-bar-fill { height: 100%; background: #F6C90E; }
+.write-review-form { background: var(--bg-alt); padding: 2rem; border-radius: var(--radius-md); }

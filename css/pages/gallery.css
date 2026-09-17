@@ -1,0 +1,15 @@
+/* gallery.css */
+.gallery-grid { column-count: 1; column-gap: 1rem; }
+@media (min-width: 600px) { .gallery-grid { column-count: 2; } }
+@media (min-width: 900px) { .gallery-grid { column-count: 3; } }
+@media (min-width: 1200px) { .gallery-grid { column-count: 4; } }
+.gallery-item { break-inside: avoid; margin-bottom: 1rem; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; position: relative; }
+.gallery-item img { width: 100%; display: block; transition: transform 0.4s; }
+.gallery-item:hover img { transform: scale(1.05); }
+.gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: var(--fs-lg); }
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+.lightbox { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; }
+.lightbox.active { display: flex; }
+.lightbox-img { max-width: 90%; max-height: 90vh; object-fit: contain; }
+.lightbox-close { position: absolute; top: 2rem; right: 2rem; color: white; font-size: 2rem; cursor: pointer; }

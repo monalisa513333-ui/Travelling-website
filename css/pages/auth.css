@@ -1,0 +1,11 @@
+/* auth.css */
+.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-light), var(--bg)); padding: 2rem; }
+.auth-card { background: var(--bg-card); width: 100%; max-width: 450px; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); padding: 2.5rem; }
+.auth-header { text-align: center; margin-bottom: 2rem; }
+.floating-label-group { position: relative; margin-bottom: 1.5rem; }
+.floating-input { width: 100%; padding: 1rem 1rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: var(--fs-base); background: transparent; }
+.floating-label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); transition: all 0.2s; pointer-events: none; }
+.floating-input:focus ~ .floating-label, .floating-input:not(:placeholder-shown) ~ .floating-label { top: 0.5rem; font-size: var(--fs-xs); color: var(--primary); }
+.social-login { display: flex; gap: 1rem; margin-top: 1.5rem; }
+.btn-social { flex: 1; display: flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; transition: background 0.3s; }
+.btn-social:hover { background: var(--bg-alt); }

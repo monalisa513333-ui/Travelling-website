@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Itinerary Planner">
+  <title>Itinerary | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/itinerary.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">📋 Itinerary Planner</h1>
+      <p class="page-header-subtitle">Plan your perfect trip day by day</p>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+      <div class="itinerary-toolbar">
+        <div class="itinerary-trip-name">
+          <input type="text" class="form-control" id="tripName" placeholder="Give your trip a name..." style="max-width:300px; font-weight:600;">
+        </div>
+        <div class="itinerary-actions">
+          <button class="btn btn-outline" id="clearItinerary">🗑️ Clear All</button>
+          <button class="btn btn-outline" id="exportItinerary">📄 Export</button>
+          <button class="btn btn-primary" id="addDayBtn">+ Add Day</button>
+        </div>
+      </div>
+      
+      <div class="itinerary-layout">
+        <!-- Days Container -->
+        <div class="itinerary-days" id="itineraryDays">
+          <!-- Day cards rendered by JS -->
+          <div class="itinerary-empty" id="itineraryEmpty">
+            <div class="empty-icon" style="font-size:3rem; margin-bottom:1rem;">🗺️</div>
+            <h3>Start Planning Your Trip</h3>
+            <p style="color:var(--text-muted); margin-bottom:1.5rem;">Click "Add Day" to begin building your itinerary</p>
+            <button class="btn btn-primary" onclick="document.getElementById('addDayBtn').click()">+ Add First Day</button>
+          </div>
+        </div>
+        
+        <!-- Activity Picker Panel -->
+        <div class="activity-picker" id="activityPicker">
+          <h3 style="margin-bottom:1rem;">📌 Add Activities</h3>
+          <input type="text" class="form-control" id="activitySearch" placeholder="Search activities..." style="margin-bottom:1rem;">
+          
+          <div class="activity-categories">
+            <button class="pill active" data-actcat="all">All</button>
+            <button class="pill" data-actcat="sightseeing">🏛️ Sightseeing</button>
+            <button class="pill" data-actcat="food">🍜 Food</button>
+            <button class="pill" data-actcat="adventure">🧗 Adventure</button>
+            <button class="pill" data-actcat="beach">🏖️ Beach</button>
+            <button class="pill" data-actcat="shopping">🛍️ Shopping</button>
+            <button class="pill" data-actcat="nightlife">🌙 Nightlife</button>
+          </div>
+          
+          <div class="activity-list" id="activityList">
+            <!-- Activity items: draggable or click-to-add -->
+          </div>
+          
+          <div class="custom-activity-form">
+            <h4 style="margin-bottom:0.75rem;">+ Custom Activity</h4>
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+              <input type="text" class="form-control" id="customActivityName" placeholder="Activity name">
+              <input type="time" class="form-control" id="customActivityTime">
+              <select class="form-control form-select" id="customActivityDay">
+                <option value="">Select day</option>
+              </select>
+              <button class="btn btn-primary btn-full" onclick="addCustomActivity()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/itinerary.js"></script>
+</body>
+</html>

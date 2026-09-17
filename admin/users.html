@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users | TravelVerse Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-topbar">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+  <div class="admin-topbar-brand">
+    <span class="logo-icon">✈</span> TravelVerse Admin
+  </div>
+  <div class="admin-topbar-actions">
+    <span class="admin-user-name" id="adminUserName"></span>
+    <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+    <a href="../index.html" class="btn btn-outline btn-sm" target="_blank">View Site ↗</a>
+  </div>
+</div>
+
+<aside class="sidebar" id="adminSidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <a href="./index.html" class="sidebar-link" data-page="dashboard">
+      <span class="sidebar-icon">📊</span> Dashboard
+    </a>
+    <a href="./users.html" class="sidebar-link active" data-page="users">
+      <span class="sidebar-icon">👥</span> Users
+    </a>
+    <a href="./bookings.html" class="sidebar-link" data-page="bookings">
+      <span class="sidebar-icon">📋</span> Bookings
+    </a>
+    <a href="./packages.html" class="sidebar-link" data-page="packages">
+      <span class="sidebar-icon">📦</span> Packages
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Content</div>
+    <a href="../destinations.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">🗺️</span> Destinations ↗
+    </a>
+    <a href="../reviews.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">⭐</span> Reviews ↗
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Account</div>
+    <a href="../profile.html" class="sidebar-link">
+      <span class="sidebar-icon">👤</span> My Profile
+    </a>
+    <button class="sidebar-link sidebar-logout" onclick="Auth.logout()">
+      <span class="sidebar-icon">🚪</span> Logout
+    </button>
+  </nav>
+</aside>
+
+<main class="admin-main" id="adminMain">
+  <div class="admin-page-header">
+    <h1>👥 Manage Users</h1>
+    <p class="text-muted" id="userCount">Loading...</p>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <div class="table-search">
+        <input type="text" class="form-control" id="userSearch" placeholder="🔍 Search users..." style="max-width:300px">
+      </div>
+      <div class="table-actions-row">
+        <select class="form-control form-select" id="roleFilter" style="width:auto">
+          <option value="all">All Roles</option>
+          <option value="user">Users</option>
+          <option value="admin">Admins</option>
+        </select>
+      </div>
+    </div>
+    <div class="admin-card-body">
+      <div class="table-wrapper">
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th onclick="sortTable('usersTable', 0)">Name ↕</th>
+              <th onclick="sortTable('usersTable', 1)">Email ↕</th>
+              <th>Role</th>
+              <th onclick="sortTable('usersTable', 3)">Bookings ↕</th>
+              <th onclick="sortTable('usersTable', 4)">Joined ↕</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersTbody"><!-- by JS --></tbody>
+        </table>
+      </div>
+      <div id="usersPagination" class="pagination"></div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <dialog class="modal" id="editUserModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit User</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('editUserModal').close()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="editUserForm">
+          <input type="hidden" id="editUserId">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="editUserName">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="editUserEmail">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="editUserPhone">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <select class="form-control form-select" id="editUserRole">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="document.getElementById('editUserModal').close()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveUserEdit()">Save Changes</button>
+      </div>
+    </div>
+  </dialog>
+</main>
+
+  <script src="../js/data/destinations.js"></script>
+  <script src="../js/data/hotels.js"></script>
+  <script src="../js/data/flights.js"></script>
+  <script src="../js/data/packages.js"></script>
+  <script src="../js/data/reviews.js"></script>
+  <script src="../js/modules/utils.js"></script>
+  <script src="../js/modules/auth.js"></script>
+  <script src="../js/modules/booking.js"></script>
+  <script src="../js/modules/admin.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    let allUsers = [];
+    let userBookings = {};
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.Auth || !window.Auth.isAdmin()) {
+        window.location.href = '../index.html';
+        return;
+      }
+      
+      const user = window.Auth.getCurrentUser();
+      if(user) document.getElementById('adminUserName').textContent = user.name;
+
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('active');
+        });
+      }
+
+      loadUsersData();
+      renderUsersTable();
+
+      document.getElementById('userSearch').addEventListener('input', renderUsersTable);
+      document.getElementById('roleFilter').addEventListener('change', renderUsersTable);
+    });
+
+    function loadUsersData() {
+      try {
+        allUsers = JSON.parse(localStorage.getItem('tv_users') || '[]');
+      } catch(e) {}
+      
+      try {
+        const bookings = JSON.parse(localStorage.getItem('tv_bookings') || '[]');
+        userBookings = bookings.reduce((acc, b) => {
+          acc[b.userId] = (acc[b.userId] || 0) + 1;
+          return acc;
+        }, {});
+      } catch(e) {}
+    }
+
+    function renderUsersTable() {
+      const search = document.getElementById('userSearch').value.toLowerCase();
+      const roleFilter = document.getElementById('roleFilter').value;
+      const tbody = document.getElementById('usersTbody');
+      const countEl = document.getElementById('userCount');
+      
+      let filtered = allUsers.filter(u => {
+        const matchSearch = u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search);
+        const matchRole = roleFilter === 'all' || u.role === roleFilter;
+        return matchSearch && matchRole;
+      });
+
+      countEl.textContent = 'Total users: ' + filtered.length;
+
+      if(filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No users found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(u => {
+        const bookingsCount = userBookings[u.id] || 0;
+        const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Unknown';
+        return '<tr>' +
+          '<td>' + u.name + '</td>' +
+          '<td>' + u.email + '</td>' +
+          '<td><span class="status-badge ' + (u.role==='admin'?'confirmed':'pending') + '">' + u.role + '</span></td>' +
+          '<td>' + bookingsCount + '</td>' +
+          '<td>' + joined + '</td>' +
+          '<td><span class="status-badge confirmed">Active</span></td>' +
+          '<td>' +
+            '<button class="btn btn-sm btn-outline" style="margin-right:0.5rem" onclick="openEditUserModal(\\'' + u.id + '\\')">Edit</button>' +
+            '<button class="btn btn-sm btn-outline text-danger" style="border-color:var(--danger)" onclick="deleteUser(\\'' + u.id + '\\')">Delete</button>' +
+          '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function sortTable(tableId, colIdx) {
+      // Basic sorting logic could be implemented here
+    }
+
+    window.openEditUserModal = function(id) {
+      const user = allUsers.find(u => u.id === id);
+      if(!user) return;
+      document.getElementById('editUserId').value = user.id;
+      document.getElementById('editUserName').value = user.name || '';
+      document.getElementById('editUserEmail').value = user.email || '';
+      document.getElementById('editUserPhone').value = user.phone || '';
+      document.getElementById('editUserRole').value = user.role || 'user';
+      document.getElementById('editUserModal').showModal();
+    }
+
+    window.saveUserEdit = function() {
+      const id = document.getElementById('editUserId').value;
+      const idx = allUsers.findIndex(u => u.id === id);
+      if(idx === -1) return;
+      
+      allUsers[idx].name = document.getElementById('editUserName').value;
+      allUsers[idx].email = document.getElementById('editUserEmail').value;
+      allUsers[idx].phone = document.getElementById('editUserPhone').value;
+      allUsers[idx].role = document.getElementById('editUserRole').value;
+      
+      localStorage.setItem('tv_users', JSON.stringify(allUsers));
+      document.getElementById('editUserModal').close();
+      renderUsersTable();
+    }
+
+    window.deleteUser = function(id) {
+      if(confirm('Are you sure you want to delete this user?')) {
+        const u = window.Auth.getCurrentUser();
+        if(u && u.userId === id) {
+          alert('Cannot delete yourself!');
+          return;
+        }
+        allUsers = allUsers.filter(u => u.id !== id);
+        localStorage.setItem('tv_users', JSON.stringify(allUsers));
+        renderUsersTable();
+      }
+    }
+  </script>
+</body>
+</html>

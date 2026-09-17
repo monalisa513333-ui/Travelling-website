@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Destination Detail">
+  <title>Destination Detail | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/destinations.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link active">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Image with Parallax -->
+  <div class="destination-hero" id="destHero" style="background-image: url('./assets/images/destinations/default.jpg')">
+    <div class="destination-hero-overlay">
+      <div class="container">
+        <div class="destination-hero-content">
+          <nav class="breadcrumb">
+            <a href="./index.html">Home</a> › 
+            <a href="./destinations.html">Destinations</a> › 
+            <span id="destBreadcrumb">Loading...</span>
+          </nav>
+          <div class="destination-hero-text">
+            <div class="destination-flag-name">
+              <h1 id="destName">Loading...</h1>
+              <span class="destination-country" id="destCountry"></span>
+            </div>
+            <div class="destination-meta-row">
+              <div class="destination-meta-item">
+                <span id="destRatingStars"></span>
+                <span id="destRatingNum"></span>
+              </div>
+              <div class="destination-meta-item">⏱️ <span id="destDuration"></span></div>
+              <div class="destination-meta-item">💰 From <span id="destPrice"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thumbnail Gallery Strip -->
+  <div class="thumb-gallery" id="thumbGallery"></div>
+
+  <div class="container" style="margin-top:2rem; margin-bottom:4rem;">
+    <div class="detail-layout">
+      <!-- Main Content -->
+      <div class="detail-main">
+        <div class="tabs-container">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="activities">Things to Do</button>
+            <button class="tab-btn" data-tab="hotels">Hotels</button>
+            <button class="tab-btn" data-tab="reviews">Reviews</button>
+          </div>
+          
+          <div class="tab-panel active" id="tabOverview">
+            <div id="destDescription"></div>
+            <div class="highlights-section">
+              <h3>✨ Highlights</h3>
+              <ul class="highlights-list" id="destHighlights"></ul>
+            </div>
+            <div class="info-grid">
+              <div class="info-card">🌤️ <strong>Best Time</strong><p id="destBestTime"></p></div>
+              <div class="info-card">🌡️ <strong>Climate</strong><p id="destClimate"></p></div>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="tabActivities" style="display:none;">
+            <div class="activities-grid" id="destActivities"></div>
+          </div>
+          
+          <div class="tab-panel" id="tabHotels" style="display:none;">
+            <div class="grid-2" id="destHotels"></div>
+          </div>
+          
+          <div class="tab-panel" id="tabReviews" style="display:none;">
+            <div id="destReviews"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Booking Sidebar -->
+      <aside class="detail-sidebar">
+        <div class="booking-box">
+          <h3>Book This Destination</h3>
+          <div class="booking-price-main">
+            <span class="card-price-amount" id="sidebarPrice">$0</span>
+            <span class="card-price-unit">/person</span>
+          </div>
+          <form id="destBookingForm">
+            <div class="form-group">
+              <label class="form-label">Check-in Date</label>
+              <input type="date" class="form-control" id="bookCheckin" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Check-out Date</label>
+              <input type="date" class="form-control" id="bookCheckout" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Number of Travelers</label>
+              <select class="form-control form-select" id="bookTravelers">
+                <option value="1">1 Traveler</option>
+                <option value="2" selected>2 Travelers</option>
+                <option value="3">3 Travelers</option>
+                <option value="4">4 Travelers</option>
+                <option value="5">5+ Travelers</option>
+              </select>
+            </div>
+            <div class="booking-summary">
+              <div class="booking-price-row"><span>Base price</span><span id="basePrice">$0</span></div>
+              <div class="booking-price-row"><span>Taxes & fees</span><span id="taxPrice">$0</span></div>
+              <div class="booking-total"><span>Total</span><span id="totalPrice">$0</span></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full btn-lg">Book Now</button>
+            <button type="button" class="btn btn-ghost btn-full" id="addWishlist">❤️ Add to Wishlist</button>
+          </form>
+          <p class="booking-note">🔒 Free cancellation within 24 hours</p>
+        </div>
+        
+        <!-- Related Packages -->
+        <div class="related-packages" id="relatedPackages"></div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Booking Confirmation Modal -->
+  <dialog class="modal" id="bookingModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">✅ Booking Confirmed!</h3>
+        <button class="modal-close btn-icon" onclick="document.getElementById('bookingModal').close()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="booking-success">
+          <div class="success-icon">🎉</div>
+          <p>Your trip has been booked successfully!</p>
+          <div class="booking-ref">Booking ID: <strong id="bookingRefId"></strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="./profile.html" class="btn btn-primary">View My Bookings</a>
+        <button class="btn btn-ghost" onclick="document.getElementById('bookingModal').close()">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/pages/destination-detail.js"></script>
+</body>
+</html>

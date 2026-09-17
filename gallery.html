@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelVerse - Travel Gallery">
+  <title>Gallery | TravelVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages/gallery.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <style>
+    /* Specific styles for gallery masonry & lightbox */
+    .gallery-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; }
+    .gallery-masonry { column-count: 1; column-gap: 1rem; }
+    @media (min-width: 600px) { .gallery-masonry { column-count: 2; } }
+    @media (min-width: 900px) { .gallery-masonry { column-count: 3; } }
+    @media (min-width: 1200px) { .gallery-masonry { column-count: 4; } }
+    .gallery-item { break-inside: avoid; margin-bottom: 1rem; position: relative; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; }
+    .gallery-item img { width: 100%; display: block; border-radius: var(--radius-md); transition: var(--transition); }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-item-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; padding: 1.5rem 1rem 1rem; opacity: 0; transition: var(--transition); }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    
+    .lightbox { position: relative; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .lightbox-close { position: absolute; top: -2rem; right: -2rem; color: #fff; font-size: 1.5rem; background: none; border: none; cursor: pointer; }
+    .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); color: #fff; border: none; font-size: 2rem; padding: 0.5rem 1rem; cursor: pointer; border-radius: var(--radius-sm); transition: var(--transition); }
+    .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.4); }
+    .lightbox-prev { left: -3rem; }
+    .lightbox-next { right: -3rem; }
+    .lightbox-img-wrapper { max-height: 80vh; overflow: hidden; }
+    .lightbox-img { max-height: 80vh; max-width: 100%; object-fit: contain; }
+    .lightbox-caption { color: #fff; text-align: center; margin-top: 1rem; }
+    #lightboxModal { background: rgba(0,0,0,0.9); border: none; padding: 2rem; }
+    #lightboxModal::backdrop { background: rgba(0,0,0,0.8); }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container container">
+      <a href="./index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">Travel<span>Verse</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="./index.html" class="nav-link">Home</a></li>
+        <li><a href="./destinations.html" class="nav-link">Destinations</a></li>
+        <li><a href="./packages.html" class="nav-link">Packages</a></li>
+        <li><a href="./hotels.html" class="nav-link">Hotels</a></li>
+        <li><a href="./flights.html" class="nav-link">Flights</a></li>
+        <li><a href="./gallery.html" class="nav-link active">Gallery</a></li>
+        <li><a href="./reviews.html" class="nav-link">Reviews</a></li>
+        <li><a href="./contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <div class="nav-auth" id="navAuth">
+          <a href="./auth.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="./auth.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <div class="nav-user d-none" id="navUser">
+          <a href="./profile.html" class="user-avatar-nav" id="userAvatarNav" title="My Profile">U</a>
+          <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="./index.html">🏠 Home</a></li>
+        <li><a href="./destinations.html">🗺️ Destinations</a></li>
+        <li><a href="./packages.html">📦 Packages</a></li>
+        <li><a href="./hotels.html">🏨 Hotels</a></li>
+        <li><a href="./flights.html">✈️ Flights</a></li>
+        <li><a href="./gallery.html">🖼️ Gallery</a></li>
+        <li><a href="./reviews.html">⭐ Reviews</a></li>
+        <li><a href="./contact.html">📞 Contact</a></li>
+        <li class="mobile-auth"><a href="./auth.html" class="btn btn-primary btn-full">Login / Sign Up</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">📸 Travel Gallery</h1>
+      <p class="page-header-subtitle">Beautiful moments captured by our travelers around the world</p>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+      <!-- Category Filters -->
+      <div class="gallery-filters">
+        <button class="pill active" data-gcat="all">🌍 All</button>
+        <button class="pill" data-gcat="beaches">🏖️ Beaches</button>
+        <button class="pill" data-gcat="mountains">⛰️ Mountains</button>
+        <button class="pill" data-gcat="cities">🏙️ Cities</button>
+        <button class="pill" data-gcat="food">🍜 Food & Culture</button>
+        <button class="pill" data-gcat="wildlife">🦁 Wildlife</button>
+        <button class="pill" data-gcat="sunsets">🌅 Sunsets</button>
+      </div>
+      
+      <!-- Masonry Gallery Grid -->
+      <div class="gallery-masonry" id="galleryGrid"><!-- images rendered by JS --></div>
+      
+      <!-- Load More -->
+      <div class="text-center" style="margin-top:2rem">
+        <button class="btn btn-outline" id="loadMoreGallery">Load More Photos</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <dialog class="modal" id="lightboxModal">
+    <div class="lightbox">
+      <button class="lightbox-close btn-icon" onclick="Gallery.closeLightbox()">✕</button>
+      <button class="lightbox-prev" onclick="Gallery.prevImage()">‹</button>
+      <button class="lightbox-next" onclick="Gallery.nextImage()">›</button>
+      <div class="lightbox-img-wrapper">
+        <img src="" alt="" class="lightbox-img" id="lightboxImg">
+      </div>
+      <div class="lightbox-caption">
+        <p id="lightboxCaption" style="font-weight:600;margin:0"></p>
+        <p id="lightboxLocation" style="color:var(--text-light);font-size:0.85em;margin:0"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./index.html" class="nav-logo footer-logo">
+            <span class="logo-icon">✈</span>
+            <span class="logo-text">Travel<span>Verse</span></span>
+          </a>
+          <p class="footer-desc">Your ultimate travel companion. Discover the world, create unforgettable memories, one destination at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">in</a>
+            <a href="#" class="social-link" aria-label="Twitter">tw</a>
+            <a href="#" class="social-link" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Explore</h4>
+          <ul class="footer-links-list">
+            <li><a href="./destinations.html">Destinations</a></li>
+            <li><a href="./packages.html">Tour Packages</a></li>
+            <li><a href="./hotels.html">Hotels</a></li>
+            <li><a href="./flights.html">Flights</a></li>
+            <li><a href="./itinerary.html">Itinerary Planner</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links-list">
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./gallery.html">Gallery</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Newsletter</h4>
+          <p class="footer-newsletter-text">Get exclusive travel deals and inspiration in your inbox.</p>
+          <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <input type="email" placeholder="Your email address" class="form-control newsletter-input" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Secure Payments</span>
+            <span class="footer-badge">✅ Verified Bookings</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TravelVerse. All rights reserved.</p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/data/destinations.js"></script>
+  <script src="./js/data/hotels.js"></script>
+  <script src="./js/data/flights.js"></script>
+  <script src="./js/data/packages.js"></script>
+  <script src="./js/data/reviews.js"></script>
+  <script src="./js/modules/utils.js"></script>
+  <script src="./js/modules/auth.js"></script>
+  <script src="./js/main.js"></script>
+
+  <script>
+    // Inline Script for Gallery
+    const GALLERY_IMAGES = [
+      { id: "1507525428034-b723cf961d3e", caption: "Tropical Paradise", location: "Maldives", category: "beaches" },
+      { id: "1476514525535-07fb3b4ae5f1", caption: "Clear Waters", location: "Bora Bora", category: "beaches" },
+      { id: "1559827260-dc66d52bef19", caption: "Sandy Shores", location: "Hawaii", category: "beaches" },
+      { id: "1506929562872-bb421503ef21", caption: "Hidden Cove", location: "Greece", category: "beaches" },
+      { id: "1542314831-068cd1dbfeeb", caption: "Palm Trees", location: "Bali", category: "beaches" },
+      { id: "1543066327-5c78d50cf76b", caption: "Ocean Waves", location: "Fiji", category: "beaches" },
+      { id: "1548574505-5e239809ee19", caption: "Beach Resort", location: "Seychelles", category: "beaches" },
+      { id: "1544551763-46a013bb70d5", caption: "Sunny Afternoon", location: "Bahamas", category: "beaches" },
+      { id: "1464822759023-fed622ff2c3b", caption: "Snowy Peaks", location: "Swiss Alps", category: "mountains" },
+      { id: "1486870591958-9b9d0d1dda99", caption: "High Altitudes", location: "Himalayas", category: "mountains" },
+      { id: "1500534314209-a25ddb2bd429", caption: "Mountain Lake", location: "Banff, Canada", category: "mountains" },
+      { id: "1477959858617-67f85cf4f1df", caption: "Green Valleys", location: "New Zealand", category: "mountains" },
+      { id: "1519681393784-d120267933ba", caption: "Rocky Trails", location: "Patagonia", category: "mountains" },
+      { id: "1454496522488-7a8e488e8606", caption: "Misty Morning", location: "Andes", category: "mountains" },
+      { id: "1418985991508-e47386d96a71", caption: "Autumn Colors", location: "Colorado", category: "mountains" },
+      { id: "1551632436-cbf8dd35adfa", caption: "Glacier Views", location: "Iceland", category: "mountains" },
+      { id: "1502602898657-3e91760cbb34", caption: "City Skyline", location: "New York", category: "cities" },
+      { id: "1540959733332-eab4deabeeaf", caption: "Neon Lights", location: "Tokyo", category: "cities" },
+      { id: "1512453979798-5ea266f8880c", caption: "Historic Streets", location: "Rome", category: "cities" },
+      { id: "1496442226666-8d4d0e62e6e9", caption: "Eiffel Tower", location: "Paris", category: "cities" },
+      { id: "1552465011-b4e21bf6e79a", caption: "Modern Architecture", location: "Dubai", category: "cities" },
+      { id: "1444723121867-7a241cacace9", caption: "Urban Vibe", location: "London", category: "cities" },
+      { id: "1569779213435-ba3167dde7cc", caption: "Canal View", location: "Venice", category: "cities" },
+      { id: "1534430480872-3498386e7856", caption: "Harbor Bridge", location: "Sydney", category: "cities" },
+      { id: "1546069901-ba9599a7e63c", caption: "Local Delicacy", location: "Italy", category: "food" },
+      { id: "1414235077428-338989a2e8c0", caption: "Street Food", location: "Thailand", category: "food" },
+      { id: "1567620905732-2d1ec7ab7445", caption: "Fresh Sushi", location: "Japan", category: "food" },
+      { id: "1504674900247-0877df9cc836", caption: "Steak Dinner", location: "Argentina", category: "food" },
+      { id: "1512621776951-a57141f2eefd", caption: "Healthy Bowl", location: "Bali", category: "food" },
+      { id: "1565299624946-b28f40a0ae38", caption: "Artisan Pizza", location: "Naples", category: "food" },
+      { id: "1484723091739-30990dd12cb9", caption: "Gourmet Dessert", location: "France", category: "food" },
+      { id: "1482049016688-2d3e1b311543", caption: "Breakfast View", location: "Santorini", category: "food" },
+      { id: "1547036967-23d11aacaee0", caption: "Majestic Lion", location: "Kenya", category: "wildlife" },
+      { id: "1474511320723-9a56873867b5", caption: "Elephant Herd", location: "Tanzania", category: "wildlife" },
+      { id: "1557050543-4d5f4e07ef46", caption: "Tropical Bird", location: "Costa Rica", category: "wildlife" },
+      { id: "1564349683136-77e08dba1ef7", caption: "Penguin Colony", location: "Antarctica", category: "wildlife" },
+      { id: "1611689342806-0863de1ca381", caption: "Wild Horses", location: "Mongolia", category: "wildlife" },
+      { id: "1551969014-7d2c4cddf0b6", caption: "Sea Turtle", location: "Galapagos", category: "wildlife" },
+      { id: "1507003211169-0a1dd7228f2d", caption: "Kangaroo", location: "Australia", category: "wildlife" },
+      { id: "1516426122078-c23e76319801", caption: "Cheetah Sprint", location: "South Africa", category: "wildlife" },
+      { id: "1470770903676-69b98201ea1c", caption: "Golden Hour", location: "California", category: "sunsets" },
+      { id: "1506905925346-21bda4d32df4", caption: "Desert Sunset", location: "Sahara", category: "sunsets" },
+      { id: "1502635385003-ee1e6a1a742d", caption: "Island Dusk", location: "Hawaii", category: "sunsets" },
+      { id: "1499159058454-75067059248a", caption: "Ocean Colors", location: "Maldives", category: "sunsets" },
+      { id: "1500534314209-a25ddb2bd429", caption: "Mountain Sunset", location: "Alps", category: "sunsets" },
+      { id: "1516912481808-3406841bd33c", caption: "City Glow", location: "New York", category: "sunsets" },
+      { id: "1505118380757-91f5f5632de0", caption: "Savanna Evening", location: "Kenya", category: "sunsets" },
+      { id: "1490750967868-88df5691cc72", caption: "Reflections", location: "Bolivia", category: "sunsets" }
+    ];
+
+    const Gallery = {
+      images: [],
+      filteredImages: [],
+      currentIndex: 0,
+      visibleCount: 12,
+
+      init() {
+        this.images = GALLERY_IMAGES.map(img => ({
+          ...img,
+          src: `https://images.unsplash.com/photo-${img.id}?w=600&q=80`,
+          fullSrc: `https://images.unsplash.com/photo-${img.id}?w=1200&q=80`
+        }));
+        this.filteredImages = [...this.images];
+        this.renderGallery();
+        this.setupFilters();
+        this.setupLoadMore();
+      },
+
+      renderGallery() {
+        const grid = document.getElementById('galleryGrid');
+        grid.innerHTML = '';
+        const toShow = this.filteredImages.slice(0, this.visibleCount);
+        
+        toShow.forEach((img, idx) => {
+          const item = document.createElement('div');
+          item.className = 'gallery-item';
+          item.onclick = () => this.openLightbox(idx);
+          item.innerHTML = `
+            <img src="${img.src}" alt="${img.caption}" loading="lazy">
+            <div class="gallery-item-overlay">
+              <h4 style="margin:0">${img.caption}</h4>
+              <p style="margin:0;font-size:0.85em">📍 ${img.location}</p>
+            </div>
+          `;
+          grid.appendChild(item);
+        });
+
+        const loadMoreBtn = document.getElementById('loadMoreGallery');
+        if (this.visibleCount >= this.filteredImages.length) {
+          loadMoreBtn.style.display = 'none';
+        } else {
+          loadMoreBtn.style.display = 'inline-block';
+        }
+      },
+
+      setupFilters() {
+        const buttons = document.querySelectorAll('.gallery-filters .pill');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            buttons.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            const cat = e.target.dataset.gcat;
+            this.filteredImages = cat === 'all' ? [...this.images] : this.images.filter(img => img.category === cat);
+            this.visibleCount = 12;
+            this.renderGallery();
+          });
+        });
+      },
+
+      setupLoadMore() {
+        const btn = document.getElementById('loadMoreGallery');
+        btn.addEventListener('click', () => {
+          this.visibleCount += 12;
+          this.renderGallery();
+        });
+      },
+
+      openLightbox(index) {
+        this.currentIndex = index;
+        this.updateLightbox();
+        document.getElementById('lightboxModal').showModal();
+      },
+
+      closeLightbox() {
+        document.getElementById('lightboxModal').close();
+      },
+
+      updateLightbox() {
+        const img = this.filteredImages[this.currentIndex];
+        document.getElementById('lightboxImg').src = img.fullSrc;
+        document.getElementById('lightboxCaption').textContent = img.caption;
+        document.getElementById('lightboxLocation').textContent = `📍 ${img.location}`;
+      },
+
+      prevImage() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          this.updateLightbox();
+        }
+      },
+
+      nextImage() {
+        if (this.currentIndex < this.filteredImages.length - 1) {
+          this.currentIndex++;
+          this.updateLightbox();
+        }
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      Gallery.init();
+    });
+  </script>
+</body>
+</html>

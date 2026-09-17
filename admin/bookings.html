@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Bookings | TravelVerse Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-topbar">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+  <div class="admin-topbar-brand">
+    <span class="logo-icon">✈</span> TravelVerse Admin
+  </div>
+  <div class="admin-topbar-actions">
+    <span class="admin-user-name" id="adminUserName"></span>
+    <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Logout</button>
+    <a href="../index.html" class="btn btn-outline btn-sm" target="_blank">View Site ↗</a>
+  </div>
+</div>
+
+<aside class="sidebar" id="adminSidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <a href="./index.html" class="sidebar-link" data-page="dashboard">
+      <span class="sidebar-icon">📊</span> Dashboard
+    </a>
+    <a href="./users.html" class="sidebar-link" data-page="users">
+      <span class="sidebar-icon">👥</span> Users
+    </a>
+    <a href="./bookings.html" class="sidebar-link active" data-page="bookings">
+      <span class="sidebar-icon">📋</span> Bookings
+    </a>
+    <a href="./packages.html" class="sidebar-link" data-page="packages">
+      <span class="sidebar-icon">📦</span> Packages
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Content</div>
+    <a href="../destinations.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">🗺️</span> Destinations ↗
+    </a>
+    <a href="../reviews.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-icon">⭐</span> Reviews ↗
+    </a>
+    <div class="sidebar-section-label" style="margin-top:1rem">Account</div>
+    <a href="../profile.html" class="sidebar-link">
+      <span class="sidebar-icon">👤</span> My Profile
+    </a>
+    <button class="sidebar-link sidebar-logout" onclick="Auth.logout()">
+      <span class="sidebar-icon">🚪</span> Logout
+    </button>
+  </nav>
+</aside>
+
+<main class="admin-main" id="adminMain">
+  <div class="admin-page-header">
+    <div>
+      <h1>📋 Manage Bookings</h1>
+      <p class="text-muted" id="bookingsTotalCount">Loading...</p>
+    </div>
+    <button class="btn btn-outline" onclick="exportBookingsCSV()">📥 Export CSV</button>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="admin-filter-bar">
+    <input type="text" class="form-control" id="bookingSearch" placeholder="🔍 Search by ID, user..." style="max-width:260px">
+    <select class="form-control form-select" id="bookingTypeFilter" style="width:auto">
+      <option value="all">All Types</option>
+      <option value="hotel">Hotels</option>
+      <option value="flight">Flights</option>
+      <option value="package">Packages</option>
+    </select>
+    <select class="form-control form-select" id="bookingStatusFilter" style="width:auto">
+      <option value="all">All Statuses</option>
+      <option value="confirmed">Confirmed</option>
+      <option value="pending">Pending</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+    <input type="date" class="form-control" id="bookingDateFrom" style="width:auto">
+    <input type="date" class="form-control" id="bookingDateTo" style="width:auto">
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-body">
+      <div class="table-wrapper">
+        <table class="data-table" id="bookingsTable">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>User</th>
+              <th>Type</th>
+              <th>Details</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTbody"><!-- by JS --></tbody>
+        </table>
+      </div>
+      <div id="bookingsPagination" class="pagination"></div>
+    </div>
+  </div>
+</main>
+
+  <script src="../js/data/destinations.js"></script>
+  <script src="../js/data/hotels.js"></script>
+  <script src="../js/data/flights.js"></script>
+  <script src="../js/data/packages.js"></script>
+  <script src="../js/data/reviews.js"></script>
+  <script src="../js/modules/utils.js"></script>
+  <script src="../js/modules/auth.js"></script>
+  <script src="../js/modules/booking.js"></script>
+  <script src="../js/modules/admin.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    let allBookings = [];
+    let usersMap = {};
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.Auth || !window.Auth.isAdmin()) {
+        window.location.href = '../index.html';
+        return;
+      }
+      const user = window.Auth.getCurrentUser();
+      if(user) document.getElementById('adminUserName').textContent = user.name;
+
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('active');
+        });
+      }
+
+      loadBookingsData();
+      renderBookingsTable();
+
+      document.getElementById('bookingSearch').addEventListener('input', renderBookingsTable);
+      document.getElementById('bookingTypeFilter').addEventListener('change', renderBookingsTable);
+      document.getElementById('bookingStatusFilter').addEventListener('change', renderBookingsTable);
+      document.getElementById('bookingDateFrom').addEventListener('change', renderBookingsTable);
+      document.getElementById('bookingDateTo').addEventListener('change', renderBookingsTable);
+    });
+
+    function loadBookingsData() {
+      try {
+        allBookings = JSON.parse(localStorage.getItem('tv_bookings') || '[]');
+      } catch(e) {}
+      
+      try {
+        const users = JSON.parse(localStorage.getItem('tv_users') || '[]');
+        users.forEach(u => usersMap[u.id] = u.name);
+      } catch(e) {}
+    }
+
+    function renderBookingsTable() {
+      const search = document.getElementById('bookingSearch').value.toLowerCase();
+      const typeF = document.getElementById('bookingTypeFilter').value;
+      const statusF = document.getElementById('bookingStatusFilter').value;
+      const dateFrom = document.getElementById('bookingDateFrom').value;
+      const dateTo = document.getElementById('bookingDateTo').value;
+
+      let filtered = allBookings.filter(b => {
+        const uName = (usersMap[b.userId] || '').toLowerCase();
+        const bId = String(b.id).toLowerCase();
+        const matchSearch = bId.includes(search) || uName.includes(search);
+        const matchType = typeF === 'all' || b.type === typeF;
+        const matchStatus = statusF === 'all' || b.status === statusF;
+        let matchDate = true;
+        
+        if (dateFrom || dateTo) {
+          const bDate = new Date(b.createdAt);
+          if (dateFrom && new Date(dateFrom) > bDate) matchDate = false;
+          if (dateTo && new Date(dateTo) < bDate) matchDate = false;
+        }
+
+        return matchSearch && matchType && matchStatus && matchDate;
+      });
+
+      // Sort by date desc
+      filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      document.getElementById('bookingsTotalCount').textContent = 'Total bookings: ' + filtered.length;
+
+      const tbody = document.getElementById('bookingsTbody');
+      if(filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center">No bookings found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(b => {
+        const dTitle = b.details?.title || b.details?.hotelName || b.details?.flightNo || '-';
+        return '<tr>' +
+          '<td>#' + String(b.id).substring(0,6) + '</td>' +
+          '<td>' + (usersMap[b.userId] || 'Unknown') + '</td>' +
+          '<td style="text-transform:capitalize">' + b.type + '</td>' +
+          '<td><div class="text-truncate" style="max-width:200px" title="' + dTitle + '">' + dTitle + '</div></td>' +
+          '<td>$' + b.amount + '</td>' +
+          '<td>' +
+            '<select class="form-control form-select btn-sm" style="width:auto;font-size:0.8rem;padding:0.2rem 1.5rem 0.2rem 0.5rem" onchange="updateBookingStatus(\\'' + b.id + '\\', this.value)">' +
+              '<option value="pending" ' + (b.status === 'pending' ? 'selected' : '') + '>Pending</option>' +
+              '<option value="confirmed" ' + (b.status === 'confirmed' ? 'selected' : '') + '>Confirmed</option>' +
+              '<option value="cancelled" ' + (b.status === 'cancelled' ? 'selected' : '') + '>Cancelled</option>' +
+            '</select>' +
+          '</td>' +
+          '<td>' + new Date(b.createdAt).toLocaleDateString() + '</td>' +
+          '<td><button class="btn btn-sm btn-outline text-danger" style="border-color:var(--danger)" onclick="deleteBooking(\\'' + b.id + '\\')">Delete</button></td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    window.updateBookingStatus = function(id, status) {
+      const idx = allBookings.findIndex(b => b.id === id);
+      if(idx > -1) {
+        allBookings[idx].status = status;
+        localStorage.setItem('tv_bookings', JSON.stringify(allBookings));
+      }
+    }
+    
+    window.deleteBooking = function(id) {
+      if(confirm('Delete booking? This cannot be undone.')) {
+        allBookings = allBookings.filter(b => b.id !== id);
+        localStorage.setItem('tv_bookings', JSON.stringify(allBookings));
+        renderBookingsTable();
+      }
+    }
+
+    window.exportBookingsCSV = function() {
+      let csv = 'Booking ID,User,Type,Amount,Status,Date\n';
+      allBookings.forEach(b => {
+        csv += String(b.id) + ',' + (usersMap[b.userId]||'Unknown') + ',' + b.type + ',' + b.amount + ',' + b.status + ',' + new Date(b.createdAt).toISOString() + '\n';
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bookings.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

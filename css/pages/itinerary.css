@@ -1,0 +1,193 @@
+/* itinerary.css */
+.itinerary-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-light);
+}
+.itinerary-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.itinerary-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+}
+
+.itinerary-days {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.itinerary-empty {
+  background: var(--bg-card);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.day-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+.day-header {
+  background: var(--bg-alt);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+}
+.day-header h3 {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.day-content {
+  padding: 1.5rem;
+  min-height: 100px;
+}
+.day-content.drag-over {
+  background: var(--primary-xlight);
+  border: 2px dashed var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+.itinerary-item {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: grab;
+}
+.itinerary-item:last-child {
+  margin-bottom: 0;
+}
+.itinerary-item .drag-handle {
+  color: var(--text-muted);
+  margin-right: 1rem;
+  cursor: grab;
+}
+.itinerary-item-info {
+  flex: 1;
+}
+.itinerary-item-info h4 {
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+.itinerary-item-info p {
+  font-size: var(--fs-sm);
+  color: var(--text-light);
+}
+
+.activity-picker {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  height: calc(100vh - 200px);
+  position: sticky;
+  top: 100px;
+  overflow-y: auto;
+}
+.activity-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.activity-categories .pill {
+  padding: 0.3rem 0.8rem;
+  font-size: var(--fs-xs);
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+.activity-categories .pill.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.activity-card {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.activity-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.activity-emoji {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  background: var(--bg-card);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+}
+.activity-details {
+  flex: 1;
+}
+.activity-details h5 {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+.activity-details span {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.activity-add-btn {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.custom-activity-form {
+  background: var(--bg-alt);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+}
+
+@media (max-width: 992px) {
+  .itinerary-layout { grid-template-columns: 1fr; }
+  .activity-picker { height: auto; position: static; }
+}
